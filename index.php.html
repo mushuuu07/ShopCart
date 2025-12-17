@@ -342,7 +342,33 @@ renderCart();
   const supabaseKey = "YOUR_ANON_PUBLIC_KEY"; // Your anon public API key
   const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 </script>
+  <!-- Supabase Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const supabaseUrl = "https://YOUR_PROJECT_ID.supabase.co";
+  const supabaseKey = "YOUR_ANON_PUBLIC_KEY";
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  async function placeOrder(orderData) {
+    const { error } = await supabase
+      .from('orders')
+      .insert([orderData]);
+
+    if (error) {
+      alert("Error placing order");
+      console.log(error);
+    } else {
+      alert("Order placed successfully!");
+    }
+  }
+</script>
 
 </body>
 </html>
+
+
+</body>
+</html>
+
 
