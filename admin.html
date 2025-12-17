@@ -1,0 +1,20 @@
+async function fetchOrders() {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) console.log(error);
+  else {
+    const table = document.getElementById("ordersTable");
+    data.forEach(order => {
+      const row = table.insertRow();
+      row.insertCell(0).innerText = order.full_name;
+      row.insertCell(1).innerText = order.email;
+      row.insertCell(2).innerText = order.items;
+      row.insertCell(3).innerText = order.created_at;
+    });
+  }
+}
+
+fetchOrders();
