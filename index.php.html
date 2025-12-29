@@ -107,47 +107,19 @@ input,select{width:100%;padding:8px;margin-bottom:10px;border-radius:6px;border:
 </head>
 <body>
 
-<div id="navAuth">
-  <button class="theme-btn" onclick="showPage('home')">Home</button>
-  <button class="theme-btn" onclick="showPage('products')">All Products</button>
-  <button class="theme-btn" onclick="showPage('about')">About</button>
-  <button class="cart-btn" onclick="toggleCart()">🛒 Cart</button>
-  <button class="history-btn" onclick="showOrderHistory()">📜 Orders</button>
-  <button class="theme-btn" onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
-  <button class="theme-btn" onclick="showPage('login')" id="loginBtn">Login</button>
-</div>
-
-
-  <!-- LOGIN -->
-<section id="login">
-  <div class="modal-content" style="max-width:400px;">
-    <h2>Login</h2>
-    <input id="loginEmail" type="email" placeholder="Email">
-    <input id="loginPassword" type="password" placeholder="Password">
-    <button class="place-btn" onclick="login()">Login</button>
-    <p style="margin-top:10px;text-align:center;">
-      Don't have an account?
-      <a onclick="showPage('register')" style="color:var(--primary);cursor:pointer;">Register</a>
-    </p>
+<nav>
+  <div class="logo"><img src="https://img.icons8.com/ios-filled/50/ffffff/shopping-cart.png"/>ShopCart</div>
+  <ul>
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('products')">Products</a></li>
+    <li><a onclick="showPage('about')">About</a></li>
+  </ul>
+  <div>
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+    <button class="cart-btn" onclick="toggleCart()">🛒 Cart</button>
+    <button class="history-btn" onclick="showOrderHistory()">📜 Orders</button>
   </div>
-</section>
-
-<!-- REGISTER -->
-<section id="register">
-  <div class="modal-content" style="max-width:400px;">
-    <h2>Register</h2>
-    <input id="regName" placeholder="Full Name">
-    <input id="regEmail" type="email" placeholder="Email">
-    <input id="regPassword" type="password" placeholder="Password">
-    <input id="regConfirm" type="password" placeholder="Confirm Password">
-    <button class="place-btn" onclick="register()">Register</button>
-    <p style="margin-top:10px;text-align:center;">
-      Already have an account?
-      <a onclick="showPage('login')" style="color:var(--primary);cursor:pointer;">Login</a>
-    </p>
-  </div>
-</section>
-
+</nav>
 
 <!-- HOME -->
 <section id="home" class="active">
@@ -211,73 +183,12 @@ input,select{width:100%;padding:8px;margin-bottom:10px;border-radius:6px;border:
 <div class="toast" id="toast">Added to cart ✔</div>
 
 <script>
-  let users = JSON.parse(localStorage.getItem('users')) || [];
-let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-
-/* AUTH UI */
-function updateAuthUI(){
-  document.getElementById('loginBtn').style.display = currentUser ? 'none' : 'inline-block';
-  document.getElementById('logoutBtn').style.display = currentUser ? 'inline-block' : 'none';
-}
-updateAuthUI();
-
-/* REGISTER */
-function register(){
-  const name = regName.value.trim();
-  const email = regEmail.value.trim();
-  const pass = regPassword.value;
-  const confirm = regConfirm.value;
-
-  if(!name || !email || !pass || !confirm){
-    alert("Fill all fields");
-    return;
-  }
-  if(pass !== confirm){
-    alert("Passwords do not match");
-    return;
-  }
-  if(users.find(u => u.email === email)){
-    alert("User already exists");
-    return;
-  }
-
-  users.push({name,email,pass});
-  localStorage.setItem('users', JSON.stringify(users));
-  alert("Registration successful! Please login.");
-  showPage('login');
-}
-
-/* LOGIN */
-function login(){
-  const email = loginEmail.value.trim();
-  const pass = loginPassword.value;
-
-  const user = users.find(u => u.email === email && u.pass === pass);
-  if(!user){
-    alert("Invalid credentials");
-    return;
-  }
-
-  currentUser = user;
-  localStorage.setItem('currentUser', JSON.stringify(user));
-  updateAuthUI();
-  showPage('home');
-}
-
-/* LOGOUT */
-function logout(){
-  currentUser = null;
-  localStorage.removeItem('currentUser');
-  updateAuthUI();
-  showPage('login');
-}
-
 /* THEME */
 if(localStorage.theme==='dark')document.body.classList.add('dark');
 function toggleTheme(){document.body.classList.toggle('dark');localStorage.theme=document.body.classList.contains('dark')?'dark':'light';}
 
 /* PAGE NAVIGATION */
-function showPage(products){
+function showPage(page){
   document.querySelectorAll('section').forEach(s=>s.style.display='none');
   document.getElementById(page).style.display='block';
 }
@@ -383,18 +294,9 @@ function toggleCart(){document.querySelector('.cart').classList.toggle('open')}
 
 /* CHECKOUT */
 document.getElementById('checkoutBtn').onclick=()=>{
-  if(!currentUser){
-    alert("Please login to continue");
-    showPage('login');
-    return;
-  }
-  if(!cart.length){
-    alert('Cart empty');
-    return;
-  }
+  if(!cart.length){alert('Cart empty');return;}
   checkoutModal.style.display='block';
 }
-
 function closeCheckout(){checkoutModal.style.display='none'}
 function placeOrder(){
   const fullName=document.getElementById('fullName').value.trim();
@@ -435,5 +337,3 @@ renderCart();
 </script>
 </body>
 </html>
-
-
