@@ -10,97 +10,77 @@
             --sc-light-navy: #232f3e; 
             --sc-accent: #febd69;
             --sc-orange: #f3a847; 
-            --bg: #f8f9fa; 
-            --white: #ffffff;
-            --radius-lg: 30px;
-            --radius-md: 18px;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --bg: #f3f4f6; /* Softer grey for curve contrast */
+            --text: #0f1111; 
+            --radius: 15px; /* The "Curve" variable */
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg); color: #2d3436; overflow-x: hidden; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); }
 
         /* --- HEADER --- */
-        header { background: var(--sc-navy); color: white; position: sticky; top: 0; z-index: 1000; }
-        .nav-main { display: flex; align-items: center; padding: 10px 30px; gap: 20px; height: 70px; }
-        .brand-logo { font-size: 28px; font-weight: 800; cursor: pointer; color: var(--sc-accent); letter-spacing: -1px; }
+        header { background: var(--sc-navy); color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-main { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 65px; }
+        .brand-logo { font-size: 26px; font-weight: 800; cursor: pointer; color: var(--sc-accent); }
         
-        .search-bar { flex-grow: 1; display: flex; height: 45px; max-width: 700px; margin: 0 auto; }
-        .search-bar input { flex-grow: 1; border: none; padding: 0 20px; border-radius: 25px 0 0 25px; outline: none; font-size: 15px; }
-        .search-btn { background: var(--sc-accent); width: 60px; display: flex; justify-content: center; align-items: center; border-radius: 0 25px 25px 0; cursor: pointer; color: black; font-size: 18px; }
+        .search-bar { flex-grow: 1; display: flex; height: 42px; }
+        .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: var(--radius) 0 0 var(--radius); outline: none; }
+        .search-btn { background: var(--sc-accent); width: 50px; display: flex; justify-content: center; align-items: center; border-radius: 0 var(--radius) var(--radius) 0; cursor: pointer; color: black; }
 
-        .nav-right { display: flex; gap: 15px; }
-        .nav-item { cursor: pointer; padding: 8px 15px; border-radius: 20px; transition: 0.3s; }
+        .nav-right { display: flex; gap: 10px; }
+        .nav-item { cursor: pointer; padding: 8px 12px; border-radius: var(--radius); border: 1px solid transparent; }
         .nav-item:hover { background: rgba(255,255,255,0.1); }
-        .nav-item span { display: block; font-size: 11px; color: #b2bec3; }
+        .nav-item span { display: block; font-size: 11px; color: #ccc; }
 
-        /* --- PAGE ANIMATION --- */
-        .page { display: none; min-height: 80vh; padding: 40px 20px; animation: fadeIn 0.5s ease-out; }
+        .nav-sub { background: var(--sc-light-navy); display: flex; gap: 25px; padding: 10px 25px; font-size: 14px; color: white; }
+        .nav-sub span { cursor: pointer; opacity: 0.9; }
+        .nav-sub span:hover { opacity: 1; text-decoration: underline; }
+
+        /* --- PAGE SYSTEM --- */
+        .page { display: none; min-height: 80vh; padding: 30px 20px; animation: slideUp 0.4s ease-out; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* --- HOME PAGE --- */
+        .hero-banner { 
+            height: 350px; 
+            background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover; background-position: center;
+            margin: -30px -20px 30px -20px;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+        .intro-card { background: white; padding: 40px; margin: -120px auto 40px; position: relative; max-width: 900px; text-align: center; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
 
         /* --- PRODUCT GRID --- */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: auto; }
-        .p-card { background: var(--white); padding: 20px; border-radius: var(--radius-md); transition: 0.3s; box-shadow: var(--shadow); cursor: pointer; border: 1px solid transparent; }
-        .p-card:hover { transform: translateY(-10px); border-color: var(--sc-accent); }
-        .p-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
-        .price-tag { font-size: 22px; font-weight: 700; color: #2d3436; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
+        .p-card { background: white; padding: 20px; border-radius: var(--radius); border: 1px solid transparent; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column; }
+        .p-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: var(--sc-accent); }
+        .p-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .p-card h4 { margin: 10px 0; font-size: 16px; font-weight: 600; line-height: 1.4; height: 45px; overflow: hidden; }
+        .price-tag { font-size: 22px; font-weight: 700; color: #222; }
 
-        /* --- AESTHETIC PROFILE UI --- */
-        .profile-container {
-            max-width: 1000px; margin: auto;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            display: grid; grid-template-columns: 280px 1fr;
-            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            min-height: 600px;
-        }
+        /* --- DESCRIPTION PAGE --- */
+        .desc-wrapper { max-width: 1100px; margin: auto; background: white; padding: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .desc-img img { width: 100%; max-height: 500px; object-fit: contain; border-radius: var(--radius); }
 
-        .profile-sidebar {
-            background: #f1f3f5; padding: 40px 20px;
-            display: flex; flex-direction: column; align-items: center;
-            border-right: 1px solid #eee;
-        }
-
-        .avatar-circle {
-            width: 100px; height: 100px;
-            background: linear-gradient(45deg, var(--sc-orange), var(--sc-accent));
-            border-radius: 50%; display: flex; justify-content: center;
-            align-items: center; font-size: 40px; color: white;
-            font-weight: bold; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(243, 168, 71, 0.3);
-        }
-
-        .profile-menu { width: 100%; margin-top: 30px; }
-        .menu-btn {
-            width: 100%; padding: 15px 20px; border: none; background: none;
-            text-align: left; font-size: 15px; font-weight: 600; color: #636e72;
-            cursor: pointer; border-radius: 12px; transition: 0.3s; margin-bottom: 5px;
-        }
-        .menu-btn.active { background: var(--white); color: var(--sc-navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .menu-btn:hover:not(.active) { background: #e9ecef; }
-
-        .profile-content { padding: 50px; }
-        .profile-section { display: none; }
-        .profile-section.active { display: block; animation: fadeIn 0.4s; }
-
-        .input-pill {
-            width: 100%; padding: 14px 20px; border-radius: 15px;
-            border: 1px solid #dfe6e9; background: #fbfbfb;
-            margin-top: 8px; font-size: 15px; outline: none; transition: 0.3s;
-        }
-        .input-pill:focus { border-color: var(--sc-orange); background: white; }
+        /* --- FORM & PROFILE BOXES --- */
+        .form-box { background: white; padding: 35px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        input[type="text"], input[type="email"] { border-radius: 10px; border: 1px solid #ddd; padding: 12px; width: 100%; transition: 0.2s; }
+        input:focus { border-color: var(--sc-orange); outline: none; box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.2); }
 
         /* --- BUTTONS --- */
-        .btn { padding: 14px 28px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-main { background: var(--sc-navy); color: white; }
-        .btn-main:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .btn-accent { background: var(--sc-accent); color: black; }
+        .btn { width: 100%; padding: 14px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
+        .btn-yellow { background: var(--sc-accent); color: #000; }
+        .btn-yellow:hover { background: #f7b14d; }
+        .btn-orange { background: var(--sc-orange); color: #fff; }
+        .btn-orange:hover { background: #e29635; }
 
         /* --- CART SIDEBAR --- */
-        .sidebar { position: fixed; right: -450px; top: 0; width: 400px; height: 100%; background: white; z-index: 2000; padding: 40px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 40px 0 0 40px; }
-        .sidebar.open { right: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.1); }
+        .sidebar { position: fixed; right: -450px; top: 0; width: 400px; height: 100%; background: white; z-index: 2000; padding: 30px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-top-left-radius: 40px; border-bottom-left-radius: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .sidebar.open { right: 0; }
 
-        footer { background: var(--sc-navy); color: white; text-align: center; padding: 60px; margin-top: 100px; border-radius: 60px 60px 0 0; }
+        footer { background: var(--sc-navy); color: white; text-align: center; padding: 50px; margin-top: 60px; border-top-left-radius: 50px; border-top-right-radius: 50px; }
     </style>
 </head>
 <body>
@@ -109,104 +89,119 @@
     <div class="nav-main">
         <div class="brand-logo" onclick="showPage('homePage')">ShopCart</div>
         <div class="search-bar">
-            <input type="text" placeholder="Search premium items...">
+            <input type="text" placeholder="Search tech, home, and more...">
             <div class="search-btn">🔍</div>
         </div>
         <div class="nav-right">
             <div class="nav-item" onclick="handleAccountNav()">
-                <span id="nav-user-label">Guest</span>
-                <strong>Account</strong>
+                <span id="user-display">Hello, Sign in</span>
+                <strong>My Profile</strong>
             </div>
             <div class="nav-item" onclick="openCart()">
-                <span>Cart</span>
-                <strong>🛒 (<span id="cart-count">0</span>)</strong>
+                <span>Review</span>
+                <strong>🛒 Cart (<span id="cart-count">0</span>)</strong>
             </div>
         </div>
+    </div>
+    <div class="nav-sub">
+        <span onclick="showPage('homePage')">Home</span>
+        <span onclick="showPage('productsPage')">All Products</span>
+        <span>Mobiles</span>
+        <span>Accessories</span>
     </div>
 </header>
 
 <section id="homePage" class="page active">
-    <div style="height: 400px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px; margin-bottom: 40px;">
-        <div>
-            <h1 style="font-size: 50px;">Elevate Your Lifestyle.</h1>
-            <p style="font-size: 20px; opacity: 0.9; margin: 20px 0;">Premium tech and home goods curated for the modern aesthetic.</p>
-            <button class="btn btn-accent" onclick="showPage('productsPage')">Shop Catalog</button>
-        </div>
+    <div class="hero-banner"></div>
+    <div class="intro-card">
+        <h1>Your Shopping, Simplified.</h1>
+        <p style="margin: 20px 0; color: #666; font-size: 18px;">Curated premium products with a touch of elegance. Start exploring the future of retail today.</p>
+        <button class="btn btn-yellow" style="width: 250px;" onclick="showPage('productsPage')">Browse Catalog</button>
     </div>
 </section>
 
 <section id="productsPage" class="page">
-    <h2 style="margin-bottom: 40px; font-weight: 800; font-size: 32px;">Discover Collections</h2>
+    <h2 style="text-align:center; margin-bottom:40px; font-size: 32px;">The ShopCart Catalog</h2>
     <div class="product-grid" id="main-grid"></div>
 </section>
 
-<section id="profilePage" class="page">
-    <div class="profile-container">
-        <div class="profile-sidebar">
-            <div class="avatar-circle" id="user-initial">U</div>
-            <h3 id="sidebar-name">User Name</h3>
-            <p id="sidebar-email" style="font-size: 13px; color: #b2bec3; margin-top: 5px;">user@example.com</p>
-            
-            <div class="profile-menu">
-                <button class="menu-btn active" onclick="switchProfileTab('edit-tab', this)">Account Details</button>
-                <button class="menu-btn" onclick="switchProfileTab('addr-tab', this)">Saved Addresses</button>
-                <button class="menu-btn" style="color: #ff7675; margin-top: 40px;" onclick="logout()">Sign Out</button>
-            </div>
+<section id="descPage" class="page">
+    <div class="desc-wrapper" id="desc-content"></div>
+</section>
+
+<section id="checkoutPage" class="page">
+    <div class="form-box" style="max-width: 500px; margin: auto;">
+        <h2 style="margin-bottom:25px;">Shipping Information</h2>
+        <div style="margin-bottom: 15px;">
+            <label>Full Name</label>
+            <input type="text" id="ship-name">
         </div>
+        <div style="margin-bottom: 15px;">
+            <label>Street Address</label>
+            <input type="text" id="ship-addr">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <input type="checkbox" id="save-to-profile" checked> Save to profile
+        </div>
+        <button class="btn btn-orange" onclick="placeOrder()">Confirm & Place Order</button>
+    </div>
+</section>
 
-        <div class="profile-content">
-            <div id="edit-tab" class="profile-section active">
-                <h2 style="margin-bottom: 30px;">Profile Settings</h2>
-                <div style="margin-bottom: 20px;">
-                    <label style="font-weight: 600; font-size: 14px;">Full Name</label>
-                    <input type="text" id="p-name-input" class="input-pill">
-                </div>
-                <div style="margin-bottom: 30px;">
-                    <label style="font-weight: 600; font-size: 14px;">Email Address</label>
-                    <input type="text" id="p-email-display" class="input-pill" disabled style="opacity: 0.6;">
-                </div>
-                <button class="btn btn-main" onclick="updateName()">Save Changes</button>
-            </div>
-
-            <div id="addr-tab" class="profile-section">
-                <h2 style="margin-bottom: 30px;">Delivery Addresses</h2>
-                <div id="address-list"></div>
-            </div>
+<section id="profilePage" class="page">
+    <div style="max-width: 900px; margin: auto; display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+        <div class="form-box" style="height: fit-content;">
+            <h3>Session</h3><br>
+            <p id="p-email" style="color: #666;"></p><br>
+            <button class="btn btn-orange" onclick="logout()">Log Out</button>
+        </div>
+        <div class="form-box">
+            <h3>Account Settings</h3><br>
+            <label>Name:</label>
+            <input type="text" id="p-name-input" style="margin: 10px 0 20px 0;">
+            <button class="btn btn-yellow" onclick="updateName()">Update Name</button>
+            <hr style="margin:30px 0; opacity: 0.1;">
+            <h3>Saved Addresses</h3>
+            <div id="address-history" style="margin-top:15px;"></div>
         </div>
     </div>
 </section>
 
 <div class="sidebar" id="sidebar">
-    <h2 style="font-size: 30px; margin-bottom: 20px;">Shopping Cart</h2>
-    <div id="cart-list" style="height: 65%; overflow-y: auto;"></div>
-    <div style="border-top: 2px solid #f1f3f5; padding-top: 30px;">
-        <h3 id="total-price" style="font-size: 26px;">Total: ₹0</h3>
-        <button class="btn btn-accent" style="width: 100%; margin-top: 20px;" onclick="showPage('checkoutPage')">Proceed to Checkout</button>
+    <h2 style="font-size: 28px;">Your Cart</h2><br>
+    <div id="cart-list" style="height:70%; overflow-y:auto;"></div>
+    <div style="border-top: 1px solid #eee; padding-top:20px;">
+        <h3 id="cart-total-text" style="font-size: 24px;">Total: ₹0</h3>
+        <button class="btn btn-yellow" style="margin-top: 15px;" onclick="goToCheckout()">Proceed to Checkout</button>
     </div>
 </div>
 
 <footer>
-    <h2>ShopCart</h2>
-    <p style="opacity: 0.5; margin-top: 15px;">© 2026 ShopCart Digital. The new standard of shopping.</p>
+    <p style="font-size: 18px; font-weight: bold;">ShopCart</p>
+    <p style="opacity: 0.6; margin-top: 10px;">© 2026 ShopCart Digital Ltd. Handcrafted for you.</p>
 </footer>
 
 <script>
-    // Product Logic
-    const types = ['Phone', 'Laptop', 'Watch', 'Audio', 'Camera'];
-    const imgs = [
-        'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=500&q=80',
-        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80',
-        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80',
-        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80',
-        'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500&q=80'
-    ];
+    const categoryImages = {
+        'Phone': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80',
+        'Headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80',
+        'Watch': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80',
+        'Laptop': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80',
+        'Camera': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500&q=80'
+    };
 
-    const products = Array.from({length: 24}, (_, i) => ({
-        id: i + 1,
-        name: `ShopCart ${types[i % 5]} Gen-${i + 1}`,
-        price: 3000 + (i * 2000),
-        img: imgs[i % 5]
-    }));
+    const productNames = ['Elite', 'Pro Max', 'Air', 'Core', 'Infinity'];
+    const types = ['Phone', 'Headphones', 'Watch', 'Laptop', 'Camera'];
+
+    const products = Array.from({length: 24}, (_, i) => {
+        const type = types[i % types.length];
+        return {
+            id: i + 1,
+            name: `${productNames[i % productNames.length]} ${type} V${i+1}`,
+            price: 2000 + (i * 1500),
+            img: categoryImages[type],
+            desc: `The ${type} reimagined. This ShopCart exclusive features premium materials, optimized battery performance, and a sleek curved aesthetic designed to fit your lifestyle.`
+        };
+    });
 
     let user = JSON.parse(localStorage.getItem('sc_user'));
     let cart = [];
@@ -214,89 +209,98 @@
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        document.getElementById('sidebar').classList.remove('open');
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // Profile Management
     function handleAccountNav() {
         if(!user) {
-            const email = prompt("Enter email to Sign In:");
+            const email = prompt("Enter email to sign in to ShopCart:");
             if(email) {
                 user = { email, name: email.split('@')[0], addresses: [] };
-                save(); updateUI();
+                save(); updateHeader();
             }
         } else {
-            renderProfile();
+            document.getElementById('p-email').innerText = user.email;
+            document.getElementById('p-name-input').value = user.name;
+            renderSavedAddresses();
             showPage('profilePage');
         }
     }
 
-    function renderProfile() {
-        document.getElementById('sidebar-name').innerText = user.name;
-        document.getElementById('sidebar-email').innerText = user.email;
-        document.getElementById('p-email-display').value = user.email;
-        document.getElementById('p-name-input').value = user.name;
-        document.getElementById('user-initial').innerText = user.name[0].toUpperCase();
-        
-        const addrList = document.getElementById('address-list');
-        addrList.innerHTML = user.addresses.length ? '' : '<p style="color:#b2bec3;">No saved addresses yet.</p>';
-        user.addresses.forEach(a => {
-            addrList.innerHTML += `<div style="background:#f8f9fa; padding:20px; border-radius:15px; margin-bottom:10px; border:1px solid #eee;">${a}</div>`;
-        });
-    }
-
-    function switchProfileTab(tabId, btn) {
-        document.querySelectorAll('.profile-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
-    }
-
-    function updateName() {
-        user.name = document.getElementById('p-name-input').value;
-        save(); updateUI(); renderProfile();
-        alert("Profile Updated!");
-    }
-
-    function logout() { user = null; localStorage.removeItem('sc_user'); updateUI(); showPage('homePage'); }
+    function updateName() { user.name = document.getElementById('p-name-input').value; save(); updateHeader(); alert("Name saved!"); }
+    function logout() { user = null; localStorage.removeItem('sc_user'); updateHeader(); showPage('homePage'); }
     function save() { localStorage.setItem('sc_user', JSON.stringify(user)); }
-    function updateUI() { 
-        document.getElementById('nav-user-label').innerText = user ? `Hello, ${user.name}` : "Hello, Sign in"; 
-    }
+    function updateHeader() { document.getElementById('user-display').innerText = user ? `Hello, ${user.name}` : "Hello, Sign in"; }
 
-    // Cart Logic
-    function openCart() {
-        const list = document.getElementById('cart-list');
-        list.innerHTML = cart.length ? '' : '<p>Your cart is empty.</p>';
-        let total = 0;
-        cart.forEach(it => {
-            total += it.price;
-            list.innerHTML += `<div style="margin-bottom:15px;"><b>${it.name}</b><br>₹${it.price.toLocaleString()}</div>`;
-        });
-        document.getElementById('total-price').innerText = "Total: ₹" + total.toLocaleString();
-        document.getElementById('sidebar').classList.add('open');
-    }
-
-    // Init
     function init() {
         const grid = document.getElementById('main-grid');
         products.forEach(p => {
             grid.innerHTML += `
-                <div class="p-card" onclick="addToCart(${p.id})">
+                <div class="p-card" onclick="viewProduct(${p.id})">
                     <img src="${p.img}">
                     <h4>${p.name}</h4>
                     <p class="price-tag">₹${p.price.toLocaleString()}</p>
+                    <button class="btn btn-yellow" style="margin-top:15px; padding:8px;">View Item</button>
                 </div>`;
         });
-        updateUI();
+        updateHeader();
+    }
+
+    function viewProduct(id) {
+        const p = products.find(x => x.id === id);
+        document.getElementById('desc-content').innerHTML = `
+            <div class="desc-img"><img src="${p.img}"></div>
+            <div>
+                <h1 style="font-size:36px;">${p.name}</h1>
+                <p style="color:var(--sc-orange); font-size:28px; font-weight:bold; margin:15px 0;">₹${p.price.toLocaleString()}</p>
+                <p style="line-height:1.8; color:#555;">${p.desc}</p><br>
+                <button class="btn btn-yellow" onclick="addToCart(${p.id})">Add to Cart</button>
+                <button class="btn btn-orange" style="margin-top:10px;" onclick="buyNow(${p.id})">Buy Now</button>
+            </div>`;
+        showPage('descPage');
     }
 
     function addToCart(id) {
-        if(!user) return alert("Sign In first!");
+        if(!user) return alert("Please sign in!");
         cart.push(products.find(x => x.id === id));
         document.getElementById('cart-count').innerText = cart.length;
-        alert("Added to cart!");
+        alert("Added to Cart!");
+    }
+
+    function buyNow(id) {
+        if(!user) return alert("Please sign in!");
+        cart = [products.find(x => x.id === id)];
+        goToCheckout();
+    }
+
+    function goToCheckout() {
+        if(!user) return alert("Sign in first!");
+        if(!cart.length) return alert("Cart empty!");
+        document.getElementById('sidebar').classList.remove('open');
+        showPage('checkoutPage');
+    }
+
+    function placeOrder() {
+        const addr = document.getElementById('ship-addr').value;
+        if(!addr) return alert("Enter address!");
+        if(document.getElementById('save-to-profile').checked) user.addresses.push(addr);
+        save(); alert("Order successful!");
+        cart = []; document.getElementById('cart-count').innerText = "0";
+        showPage('homePage');
+    }
+
+    function renderSavedAddresses() {
+        const box = document.getElementById('address-history');
+        box.innerHTML = user.addresses.length ? '' : 'No addresses saved.';
+        user.addresses.forEach(a => box.innerHTML += `<div style="padding:15px; background:#f9f9f9; border-radius:12px; margin-bottom:10px; border:1px solid #eee;">${a}</div>`);
+    }
+
+    function openCart() {
+        const list = document.getElementById('cart-list');
+        list.innerHTML = ''; let sum = 0;
+        cart.forEach(it => { sum += it.price; list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; margin-bottom:10px;"><b>${it.name}</b><br>₹${it.price}</div>`; });
+        document.getElementById('cart-total-text').innerText = "Total: ₹" + sum.toLocaleString();
+        document.getElementById('sidebar').classList.add('open');
     }
 
     init();
