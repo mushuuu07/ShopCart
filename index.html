@@ -3,99 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopCart | Your Favorite Store</title>
+    <title>ShopCart | Premium Shopping</title>
     <style>
         :root {
             --sc-navy: #131921; 
             --sc-light-navy: #232f3e; 
             --sc-accent: #febd69;
             --sc-orange: #f3a847; 
-            --bg: #eaeded; 
+            --bg: #f3f4f6; /* Softer grey for curve contrast */
             --text: #0f1111; 
-            --link: #007185;
+            --radius: 15px; /* The "Curve" variable */
         }
 
         * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); }
 
-        /* --- HEADER & BRANDING --- */
-        header { background: var(--sc-navy); color: white; position: sticky; top: 0; z-index: 1000; }
-        .nav-main { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 60px; }
-        .brand-logo { font-size: 24px; font-weight: 800; cursor: pointer; color: var(--sc-accent); letter-spacing: -1px; }
-        .brand-logo span { color: white; }
+        /* --- HEADER --- */
+        header { background: var(--sc-navy); color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-main { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 65px; }
+        .brand-logo { font-size: 26px; font-weight: 800; cursor: pointer; color: var(--sc-accent); }
         
-        .search-bar { flex-grow: 1; display: flex; height: 40px; }
-        .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: 4px 0 0 4px; outline: none; }
-        .search-btn { background: var(--sc-accent); width: 45px; display: flex; justify-content: center; align-items: center; border-radius: 0 4px 4px 0; cursor: pointer; color: black; }
+        .search-bar { flex-grow: 1; display: flex; height: 42px; }
+        .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: var(--radius) 0 0 var(--radius); outline: none; }
+        .search-btn { background: var(--sc-accent); width: 50px; display: flex; justify-content: center; align-items: center; border-radius: 0 var(--radius) var(--radius) 0; cursor: pointer; color: black; }
 
         .nav-right { display: flex; gap: 10px; }
-        .nav-item { cursor: pointer; padding: 5px 10px; border: 1px solid transparent; }
-        .nav-item:hover { border-color: white; }
-        .nav-item span { display: block; font-size: 12px; color: #ccc; }
+        .nav-item { cursor: pointer; padding: 8px 12px; border-radius: var(--radius); border: 1px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .nav-item span { display: block; font-size: 11px; color: #ccc; }
 
-        .nav-sub { background: var(--sc-light-navy); display: flex; gap: 20px; padding: 8px 20px; font-size: 14px; color: white; }
-        .nav-sub span { cursor: pointer; }
+        .nav-sub { background: var(--sc-light-navy); display: flex; gap: 25px; padding: 10px 25px; font-size: 14px; color: white; }
+        .nav-sub span { cursor: pointer; opacity: 0.9; }
+        .nav-sub span:hover { opacity: 1; text-decoration: underline; }
 
         /* --- PAGE SYSTEM --- */
-        .page { display: none; min-height: 80vh; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page { display: none; min-height: 80vh; padding: 30px 20px; animation: slideUp 0.4s ease-out; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         /* --- HOME PAGE --- */
         .hero-banner { 
-            height: 300px; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0), var(--bg)), url('https://images-eu.ssl-images-amazon.com/images/G/31/img22/WES/July/MSO/PC_Hero_3000x1200_1._CB632151608_.jpg');
+            height: 350px; 
+            background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80');
             background-size: cover; background-position: center;
-            margin: -20px -20px 20px -20px;
+            margin: -30px -20px 30px -20px;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
         }
-        .intro-card { background: white; padding: 40px; margin: -100px auto 30px; position: relative; max-width: 900px; text-align: center; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .intro-card { background: white; padding: 40px; margin: -120px auto 40px; position: relative; max-width: 900px; text-align: center; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
 
         /* --- PRODUCT GRID --- */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-        .p-card { background: white; padding: 15px; border: 1px solid #ddd; cursor: pointer; transition: transform 0.2s; }
-        .p-card:hover { transform: translateY(-5px); }
-        .p-card img { width: 100%; height: 180px; object-fit: contain; }
-        .p-card h4 { margin: 10px 0; font-size: 15px; color: var(--link); }
-        .price-tag { font-size: 20px; font-weight: bold; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
+        .p-card { background: white; padding: 20px; border-radius: var(--radius); border: 1px solid transparent; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column; }
+        .p-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: var(--sc-accent); }
+        .p-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .p-card h4 { margin: 10px 0; font-size: 16px; font-weight: 600; line-height: 1.4; height: 45px; overflow: hidden; }
+        .price-tag { font-size: 22px; font-weight: 700; color: #222; }
 
         /* --- DESCRIPTION PAGE --- */
-        .desc-wrapper { max-width: 1100px; margin: auto; background: white; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; border-radius: 8px; }
-        .desc-img img { width: 100%; max-height: 450px; object-fit: contain; }
+        .desc-wrapper { max-width: 1100px; margin: auto; background: white; padding: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .desc-img img { width: 100%; max-height: 500px; object-fit: contain; border-radius: var(--radius); }
 
-        /* --- CHECKOUT & PROFILE --- */
-        .form-box { max-width: 500px; margin: auto; background: white; padding: 30px; border: 1px solid #ddd; border-radius: 8px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
-        .input-group input { width: 100%; padding: 10px; border: 1px solid #888; border-radius: 3px; }
+        /* --- FORM & PROFILE BOXES --- */
+        .form-box { background: white; padding: 35px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        input[type="text"], input[type="email"] { border-radius: 10px; border: 1px solid #ddd; padding: 12px; width: 100%; transition: 0.2s; }
+        input:focus { border-color: var(--sc-orange); outline: none; box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.2); }
+
+        /* --- BUTTONS --- */
+        .btn { width: 100%; padding: 14px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
+        .btn-yellow { background: var(--sc-accent); color: #000; }
+        .btn-yellow:hover { background: #f7b14d; }
+        .btn-orange { background: var(--sc-orange); color: #fff; }
+        .btn-orange:hover { background: #e29635; }
 
         /* --- CART SIDEBAR --- */
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; }
-        .sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; padding: 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar { position: fixed; right: -450px; top: 0; width: 400px; height: 100%; background: white; z-index: 2000; padding: 30px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-top-left-radius: 40px; border-bottom-left-radius: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
         .sidebar.open { right: 0; }
 
-        .btn { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #a88734; cursor: pointer; font-weight: bold; }
-        .btn-yellow { background: #ffd814; margin-top: 10px; }
-        .btn-orange { background: #ffa41c; }
-
-        footer { background: var(--sc-navy); color: white; text-align: center; padding: 40px; margin-top: 50px; }
+        footer { background: var(--sc-navy); color: white; text-align: center; padding: 50px; margin-top: 60px; border-top-left-radius: 50px; border-top-right-radius: 50px; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="nav-main">
-        <div class="brand-logo" onclick="showPage('homePage')">Shop<span>Cart</span></div>
+        <div class="brand-logo" onclick="showPage('homePage')">ShopCart</div>
         <div class="search-bar">
-            <input type="text" placeholder="Search ShopCart catalog...">
+            <input type="text" placeholder="Search tech, home, and more...">
             <div class="search-btn">🔍</div>
         </div>
         <div class="nav-right">
             <div class="nav-item" onclick="handleAccountNav()">
                 <span id="user-display">Hello, Sign in</span>
-                <strong>Account & Profile</strong>
+                <strong>My Profile</strong>
             </div>
             <div class="nav-item" onclick="openCart()">
-                <span>My</span>
+                <span>Review</span>
                 <strong>🛒 Cart (<span id="cart-count">0</span>)</strong>
             </div>
         </div>
@@ -103,22 +106,22 @@
     <div class="nav-sub">
         <span onclick="showPage('homePage')">Home</span>
         <span onclick="showPage('productsPage')">All Products</span>
-        <span>Deals</span>
-        <span>Customer Service</span>
+        <span>Mobiles</span>
+        <span>Accessories</span>
     </div>
 </header>
 
 <section id="homePage" class="page active">
     <div class="hero-banner"></div>
     <div class="intro-card">
-        <h1>Welcome to ShopCart</h1>
-        <p style="margin: 15px 0; color: #555;">Discover the finest products curated just for you. From high-tech gadgets to home essentials, ShopCart offers premium quality at unbeatable prices.</p>
-        <button class="btn btn-yellow" style="width: 250px;" onclick="showPage('productsPage')">Explore Our Collection</button>
+        <h1>Your Shopping, Simplified.</h1>
+        <p style="margin: 20px 0; color: #666; font-size: 18px;">Curated premium products with a touch of elegance. Start exploring the future of retail today.</p>
+        <button class="btn btn-yellow" style="width: 250px;" onclick="showPage('productsPage')">Browse Catalog</button>
     </div>
 </section>
 
 <section id="productsPage" class="page">
-    <h2 style="text-align:center; margin-bottom:30px;">Featured Products</h2>
+    <h2 style="text-align:center; margin-bottom:40px; font-size: 32px;">The ShopCart Catalog</h2>
     <div class="product-grid" id="main-grid"></div>
 </section>
 
@@ -127,70 +130,78 @@
 </section>
 
 <section id="checkoutPage" class="page">
-    <div class="form-box">
-        <h2 style="margin-bottom:20px;">Shipping Details</h2>
-        <div class="input-group">
-            <label>Recipient Name</label>
+    <div class="form-box" style="max-width: 500px; margin: auto;">
+        <h2 style="margin-bottom:25px;">Shipping Information</h2>
+        <div style="margin-bottom: 15px;">
+            <label>Full Name</label>
             <input type="text" id="ship-name">
         </div>
-        <div class="input-group">
-            <label>Complete Address</label>
+        <div style="margin-bottom: 15px;">
+            <label>Street Address</label>
             <input type="text" id="ship-addr">
         </div>
-        <div class="input-group">
-            <label>City & Pincode</label>
-            <input type="text" id="ship-city">
+        <div style="margin-bottom: 20px;">
+            <input type="checkbox" id="save-to-profile" checked> Save to profile
         </div>
-        <div class="input-group">
-            <input type="checkbox" id="save-to-profile" checked> 
-            <label style="display:inline; margin-left:5px;">Save this address to my ShopCart Profile</label>
-        </div>
-        <button class="btn btn-orange" onclick="placeOrder()">Continue to Payment & Finish</button>
+        <button class="btn btn-orange" onclick="placeOrder()">Confirm & Place Order</button>
     </div>
 </section>
 
 <section id="profilePage" class="page">
-    <div style="max-width: 800px; margin: auto; display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
-        <div class="form-box" style="margin:0;">
-            <h3>User Info</h3><br>
-            <p><strong>Email:</strong> <span id="p-email"></span></p><br>
-            <button class="btn" style="background:#eee;" onclick="logout()">Log Out</button>
+    <div style="max-width: 900px; margin: auto; display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+        <div class="form-box" style="height: fit-content;">
+            <h3>Session</h3><br>
+            <p id="p-email" style="color: #666;"></p><br>
+            <button class="btn btn-orange" onclick="logout()">Log Out</button>
         </div>
-        <div class="form-box" style="margin:0; max-width:none;">
-            <h3>Manage Profile</h3><br>
-            <label>Update Full Name:</label>
-            <input type="text" id="p-name-input" style="width:100%; padding:8px; margin:10px 0;">
-            <button class="btn btn-yellow" onclick="updateName()">Save Name</button>
-            <hr style="margin:25px 0;">
+        <div class="form-box">
+            <h3>Account Settings</h3><br>
+            <label>Name:</label>
+            <input type="text" id="p-name-input" style="margin: 10px 0 20px 0;">
+            <button class="btn btn-yellow" onclick="updateName()">Update Name</button>
+            <hr style="margin:30px 0; opacity: 0.1;">
             <h3>Saved Addresses</h3>
-            <div id="address-history" style="margin-top:10px;"></div>
+            <div id="address-history" style="margin-top:15px;"></div>
         </div>
     </div>
 </section>
 
-<div class="overlay" id="overlay" onclick="closeCart()"></div>
 <div class="sidebar" id="sidebar">
-    <h2>Your Cart</h2><br>
+    <h2 style="font-size: 28px;">Your Cart</h2><br>
     <div id="cart-list" style="height:70%; overflow-y:auto;"></div>
-    <div style="border-top: 1px solid #ddd; padding-top:15px;">
-        <h3 id="cart-total-text">Total: ₹0</h3>
-        <button class="btn btn-yellow" onclick="goToCheckout()">Proceed to Buy</button>
+    <div style="border-top: 1px solid #eee; padding-top:20px;">
+        <h3 id="cart-total-text" style="font-size: 24px;">Total: ₹0</h3>
+        <button class="btn btn-yellow" style="margin-top: 15px;" onclick="goToCheckout()">Proceed to Checkout</button>
     </div>
 </div>
 
 <footer>
-    <p>© 2026 ShopCart.com - All Rights Reserved.</p>
+    <p style="font-size: 18px; font-weight: bold;">ShopCart</p>
+    <p style="opacity: 0.6; margin-top: 10px;">© 2026 ShopCart Digital Ltd. Handcrafted for you.</p>
 </footer>
 
 <script>
-    // Generate 24 Products
-    const products = Array.from({length: 24}, (_, i) => ({
-        id: i + 1,
-        name: `${['Ultra', 'Pro', 'Classic', 'Essential', 'Smart'][i%5]} ${['Smartphone', 'Headphones', 'Coffee Maker', 'Laptop', 'Backpack'][i%5]} Gen-${i+1}`,
-        price: 1500 + (i * 950),
-        img: 'https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UY327_FMwebp_QL65_.jpg',
-        desc: `The latest ShopCart ${['Smartphone', 'Headphones', 'Coffee Maker', 'Laptop', 'Backpack'][i%5]}. Featuring industry-leading performance, elegant design, and a comprehensive 1-year ShopCart Warranty.`
-    }));
+    const categoryImages = {
+        'Phone': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80',
+        'Headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80',
+        'Watch': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80',
+        'Laptop': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80',
+        'Camera': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500&q=80'
+    };
+
+    const productNames = ['Elite', 'Pro Max', 'Air', 'Core', 'Infinity'];
+    const types = ['Phone', 'Headphones', 'Watch', 'Laptop', 'Camera'];
+
+    const products = Array.from({length: 24}, (_, i) => {
+        const type = types[i % types.length];
+        return {
+            id: i + 1,
+            name: `${productNames[i % productNames.length]} ${type} V${i+1}`,
+            price: 2000 + (i * 1500),
+            img: categoryImages[type],
+            desc: `The ${type} reimagined. This ShopCart exclusive features premium materials, optimized battery performance, and a sleek curved aesthetic designed to fit your lifestyle.`
+        };
+    });
 
     let user = JSON.parse(localStorage.getItem('sc_user'));
     let cart = [];
@@ -198,13 +209,12 @@
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // Auth Logic
     function handleAccountNav() {
         if(!user) {
-            const email = prompt("Welcome to ShopCart! Enter email to sign in:");
+            const email = prompt("Enter email to sign in to ShopCart:");
             if(email) {
                 user = { email, name: email.split('@')[0], addresses: [] };
                 save(); updateHeader();
@@ -217,16 +227,11 @@
         }
     }
 
-    function updateName() {
-        user.name = document.getElementById('p-name-input').value;
-        save(); updateHeader(); alert("Profile updated!");
-    }
-
+    function updateName() { user.name = document.getElementById('p-name-input').value; save(); updateHeader(); alert("Name saved!"); }
     function logout() { user = null; localStorage.removeItem('sc_user'); updateHeader(); showPage('homePage'); }
     function save() { localStorage.setItem('sc_user', JSON.stringify(user)); }
     function updateHeader() { document.getElementById('user-display').innerText = user ? `Hello, ${user.name}` : "Hello, Sign in"; }
 
-    // Catalog Logic
     function init() {
         const grid = document.getElementById('main-grid');
         products.forEach(p => {
@@ -235,6 +240,7 @@
                     <img src="${p.img}">
                     <h4>${p.name}</h4>
                     <p class="price-tag">₹${p.price.toLocaleString()}</p>
+                    <button class="btn btn-yellow" style="margin-top:15px; padding:8px;">View Item</button>
                 </div>`;
         });
         updateHeader();
@@ -245,67 +251,57 @@
         document.getElementById('desc-content').innerHTML = `
             <div class="desc-img"><img src="${p.img}"></div>
             <div>
-                <h1>${p.name}</h1><hr style="margin:15px 0;">
-                <p class="price-tag" style="color: #B12704; font-size: 28px;">₹${p.price.toLocaleString()}</p><br>
-                <p><strong>About this item:</strong><br>${p.desc}</p><br>
+                <h1 style="font-size:36px;">${p.name}</h1>
+                <p style="color:var(--sc-orange); font-size:28px; font-weight:bold; margin:15px 0;">₹${p.price.toLocaleString()}</p>
+                <p style="line-height:1.8; color:#555;">${p.desc}</p><br>
                 <button class="btn btn-yellow" onclick="addToCart(${p.id})">Add to Cart</button>
-                <button class="btn btn-orange" onclick="buyNow(${p.id})">Buy Now</button>
+                <button class="btn btn-orange" style="margin-top:10px;" onclick="buyNow(${p.id})">Buy Now</button>
             </div>`;
         showPage('descPage');
     }
 
-    // Purchase Logic
     function addToCart(id) {
-        if(!user) return alert("Sign in to ShopCart first!");
+        if(!user) return alert("Please sign in!");
         cart.push(products.find(x => x.id === id));
         document.getElementById('cart-count').innerText = cart.length;
-        alert("Item added to cart!");
+        alert("Added to Cart!");
     }
 
     function buyNow(id) {
-        if(!user) return alert("Sign in to ShopCart first!");
+        if(!user) return alert("Please sign in!");
         cart = [products.find(x => x.id === id)];
         goToCheckout();
     }
 
     function goToCheckout() {
-        if(!user) return alert("Please sign in first!");
-        if(!cart.length) return alert("Your cart is empty!");
-        closeCart();
+        if(!user) return alert("Sign in first!");
+        if(!cart.length) return alert("Cart empty!");
+        document.getElementById('sidebar').classList.remove('open');
         showPage('checkoutPage');
     }
 
     function placeOrder() {
-        const name = document.getElementById('ship-name').value;
         const addr = document.getElementById('ship-addr').value;
-        if(!name || !addr) return alert("Please fill in shipping details");
-
-        if(document.getElementById('save-to-profile').checked) {
-            user.addresses.push(`${name}: ${addr}`);
-            save();
-        }
-        alert("Order Placed Successfully via ShopCart!");
+        if(!addr) return alert("Enter address!");
+        if(document.getElementById('save-to-profile').checked) user.addresses.push(addr);
+        save(); alert("Order successful!");
         cart = []; document.getElementById('cart-count').innerText = "0";
         showPage('homePage');
     }
 
     function renderSavedAddresses() {
         const box = document.getElementById('address-history');
-        box.innerHTML = user.addresses.length ? '' : 'No saved addresses yet.';
-        user.addresses.forEach(a => box.innerHTML += `<div style="padding:10px; background:#f0f0f0; margin-bottom:5px; border-radius:4px;">${a}</div>`);
+        box.innerHTML = user.addresses.length ? '' : 'No addresses saved.';
+        user.addresses.forEach(a => box.innerHTML += `<div style="padding:15px; background:#f9f9f9; border-radius:12px; margin-bottom:10px; border:1px solid #eee;">${a}</div>`);
     }
 
-    // Sidebar
     function openCart() {
         const list = document.getElementById('cart-list');
-        list.innerHTML = cart.length ? '' : 'Empty cart.';
-        let sum = 0;
-        cart.forEach(it => { sum += it.price; list.innerHTML += `<p>• ${it.name} - <b>₹${it.price}</b></p>`; });
+        list.innerHTML = ''; let sum = 0;
+        cart.forEach(it => { sum += it.price; list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; margin-bottom:10px;"><b>${it.name}</b><br>₹${it.price}</div>`; });
         document.getElementById('cart-total-text').innerText = "Total: ₹" + sum.toLocaleString();
         document.getElementById('sidebar').classList.add('open');
-        document.getElementById('overlay').style.display = 'block';
     }
-    function closeCart() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').style.display='none'; }
 
     init();
 </script>
