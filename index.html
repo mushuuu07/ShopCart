@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon Clone - Secure Shopping</title>
+    <title>Amazon Clone - Checkout Flow</title>
     <style>
         :root {
             --amz-blue: #131921; --amz-light: #232f3e; --amz-yellow: #febd69;
             --amz-orange: #f3a847; --bg: #eaeded; --text: #0f1111; --link: #007185;
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; transition: 0.2s; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* --- HEADER --- */
+        /* --- PERSISTENT HEADER --- */
         header { background: var(--amz-blue); color: white; position: sticky; top: 0; z-index: 1000; }
         .nav-main { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 60px; }
-        .logo { font-size: 22px; font-weight: bold; cursor: pointer; padding: 5px; }
+        .logo { font-size: 22px; font-weight: bold; cursor: pointer; }
         .search-bar { flex-grow: 1; display: flex; height: 40px; }
         .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: 4px 0 0 4px; outline: none; }
         .search-icon { background: var(--amz-yellow); width: 45px; display: flex; justify-content: center; align-items: center; border-radius: 0 4px 4px 0; cursor: pointer; }
         .nav-right { display: flex; gap: 15px; }
         .nav-item { cursor: pointer; padding: 5px 10px; border: 1px solid transparent; }
-        .nav-item:hover { border-color: white; }
         .nav-item span { display: block; font-size: 12px; color: #ccc; }
 
-        /* --- PAGES --- */
+        /* --- PAGE CONTROL --- */
         .page { display: none; min-height: 80vh; padding: 20px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- ACCOUNT / LOGIN --- */
-        .auth-container { max-width: 350px; margin: 50px auto; background: white; padding: 25px; border: 1px solid #ddd; border-radius: 8px; }
-        .auth-container h2 { margin-bottom: 20px; }
-        .auth-container input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #888; border-radius: 3px; }
-
-        /* --- PRODUCT STYLES --- */
+        /* --- PRODUCT GRID --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
         .card { background: white; padding: 15px; cursor: pointer; border: 1px solid #ddd; }
         .card img { width: 100%; height: 200px; object-fit: contain; }
+
+        /* --- CHECKOUT PAGE STYLES --- */
+        .checkout-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; max-width: 1100px; margin: auto; }
+        .checkout-step { background: white; padding: 20px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; }
+        .checkout-step h2 { font-size: 18px; margin-bottom: 15px; color: #c45500; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        .input-group input, .input-group select { width: 100%; padding: 8px; border: 1px solid #888; border-radius: 3px; }
         
-        /* --- PRODUCT DETAIL PAGE --- */
-        .details-layout { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 30px; max-width: 1300px; margin: auto; background: white; padding: 30px; }
-        .buy-box { border: 1px solid #ddd; padding: 15px; border-radius: 8px; height: fit-content; }
+        .order-summary { background: white; padding: 20px; border: 1px solid #ddd; border-radius: 4px; height: fit-content; position: sticky; top: 80px; }
+        .order-summary h3 { margin-bottom: 15px; font-size: 18px; }
 
         /* --- CART SIDEBAR --- */
         .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
-        .cart-sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; padding: 20px; box-shadow: -5px 0 15px rgba(0,0,0,0.2); }
+        .cart-sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; padding: 20px; transition: 0.3s; }
         .cart-sidebar.open { right: 0; }
-        .cart-item { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-        .btn { width: 100%; padding: 10px; border-radius: 20px; border: 1px solid #a88734; cursor: pointer; font-weight: bold; margin-bottom: 10px; }
-        .btn-yellow { background: #ffd814; }
+        .btn { width: 100%; padding: 10px; border-radius: 20px; border: 1px solid #a88734; cursor: pointer; font-weight: bold; }
+        .btn-yellow { background: #ffd814; margin-top: 10px; }
         .btn-orange { background: #ffa41c; }
 
-        footer { background: var(--amz-light); color: white; text-align: center; padding: 40px; margin-top: 50px; }
+        footer { background: var(--amz-light); color: white; text-align: center; padding: 30px; margin-top: 50px; }
     </style>
 </head>
 <body>
@@ -62,209 +62,167 @@
 <header>
     <div class="nav-main">
         <div class="logo" onclick="showPage('homePage')">amazon.in</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search Amazon">
-            <div class="search-icon">🔍</div>
-        </div>
+        <div class="search-bar"><input type="text"><div class="search-icon">🔍</div></div>
         <div class="nav-right">
-            <div class="nav-item" onclick="showPage('accountPage')">
-                <span id="userGreet">Hello, Sign in</span>
-                <strong>Account & Lists</strong>
-            </div>
-            <div class="nav-item" onclick="openCart()">
-                <span>Shopping</span>
-                <strong>🛒 Cart (<span id="cartCount">0</span>)</strong>
-            </div>
+            <div class="nav-item" onclick="showPage('accountPage')"><span id="userGreet">Hello, Sign in</span><strong>Account</strong></div>
+            <div class="nav-item" onclick="openCart()"><span>Shopping</span><strong>🛒 Cart (<span id="cartCount">0</span>)</strong></div>
         </div>
     </div>
 </header>
 
 <section id="homePage" class="page active">
-    <div style="height:300px; background: url('https://images-eu.ssl-images-amazon.com/images/G/31/img24/Audio/Aug/MSO/PC_Hero_3000x1200_1._CB566236353_.jpg') center/cover; margin: -20px -20px 40px -20px;"></div>
-    <div style="max-width:1200px; margin:auto; background:white; padding:30px; text-align:center; margin-top:-100px; position:relative; border-radius:4px;">
-        <h1>Your All-in-One Shop</h1>
-        <p>Log in to your account to start adding items to your cart and enjoy personalized deals.</p>
-    </div>
-    <h2 style="max-width:1200px; margin: 30px auto 15px;">Explore Products</h2>
+    <div style="height:250px; background: url('https://images-eu.ssl-images-amazon.com/images/G/31/img22/WES/July/MSO/PC_Hero_3000x1200_1._CB632151608_.jpg') center/cover; margin-bottom: 20px;"></div>
     <div class="grid" id="mainGrid"></div>
 </section>
 
 <section id="accountPage" class="page">
-    <div class="auth-container" id="loginForm">
-        <h2>Sign-In</h2>
-        <label>Email</label>
-        <input type="email" id="loginEmail" placeholder="Enter your email">
-        <label>Password</label>
-        <input type="password" id="loginPass" placeholder="Enter password">
-        <button class="btn btn-yellow" onclick="handleLogin()">Sign In</button>
-        <p style="font-size:12px;">By continuing, you agree to Amazon's Conditions of Use.</p>
-    </div>
-    <div class="auth-container" id="userInfo" style="display:none; text-align:center;">
-        <h2>Your Account</h2>
-        <p id="displayEmail" style="margin-bottom:20px; color:var(--link);"></p>
-        <button class="btn" onclick="handleLogout()">Sign Out</button>
+    <div style="max-width:350px; margin:auto; background:white; padding:30px; border:1px solid #ddd;">
+        <h2>Sign-In</h2><br>
+        <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
+        <button class="btn btn-yellow" onclick="handleLogin()">Continue</button>
     </div>
 </section>
 
 <section id="descPage" class="page">
-    <div class="details-layout" id="productDetail"></div>
+    <div id="productDetail" style="max-width:1000px; margin:auto; background:white; padding:30px; display:flex; gap:30px;"></div>
+</section>
+
+<section id="checkoutPage" class="page">
+    <div class="checkout-layout">
+        <div>
+            <div class="checkout-step">
+                <h2>1. Delivery Address</h2>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="shipName">
+                </div>
+                <div class="input-group">
+                    <label>Flat, House no., Building</label>
+                    <input type="text" id="shipAddr">
+                </div>
+                <div class="input-group">
+                    <label>Town/City</label>
+                    <input type="text" id="shipCity">
+                </div>
+            </div>
+
+            <div class="checkout-step">
+                <h2>2. Payment Method</h2>
+                <div class="input-group">
+                    <input type="radio" name="pay" checked> Cash on Delivery (COD)
+                </div>
+                <div class="input-group">
+                    <input type="radio" name="pay"> UPI / Credit / Debit Card
+                </div>
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span>Items:</span><span id="sumItems">₹0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:red; font-size:18px; font-weight:bold; border-top:1px solid #eee; padding-top:10px;">
+                <span>Order Total:</span><span id="sumTotal">₹0</span>
+            </div>
+            <br>
+            <button class="btn btn-orange" onclick="placeOrder()">Place Your Order</button>
+        </div>
+    </div>
 </section>
 
 <div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-sidebar" id="sidebar">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; padding-bottom:10px;">
-        <h3>Shopping Cart</h3>
-        <span onclick="closeCart()" style="cursor:pointer; font-size:24px;">&times;</span>
-    </div>
-    <div id="cartList" style="margin-top:20px; height: 75%; overflow-y: auto;"></div>
-    <div style="border-top:1px solid #ddd; padding-top:20px;">
-        <h4>Subtotal: ₹<span id="cartTotal">0</span></h4>
-        <button class="btn btn-yellow" onclick="checkoutAlert()">Proceed to Buy</button>
+    <h3>Shopping Cart</h3><br>
+    <div id="cartList" style="height:70%; overflow-y:auto;"></div>
+    <div style="border-top:1px solid #ddd; padding-top:15px;">
+        <h4>Subtotal: ₹<span id="cartSubtotal">0</span></h4>
+        <button class="btn btn-yellow" onclick="goToCheckout()">Proceed to Buy</button>
     </div>
 </div>
 
-<footer>
-    <p>© 1996-2026, Amazon Clone. All rights reserved.</p>
-</footer>
+<footer><p>© 2026 Amazon Clone</p></footer>
 
 <script>
     const products = [
-        { id: 1, name: 'iPhone 15 Pro Max', price: 149900, img: 'https://m.media-amazon.com/images/I/81Sig6bi1GL._AC_UY327_FMwebp_QL65_.jpg', desc: 'Titanium design, A17 Pro chip, and the most powerful iPhone camera system ever.' },
-        { id: 2, name: 'Sony XM5 Headphones', price: 29990, img: 'https://m.media-amazon.com/images/I/51aB7hrGRRL._AC_UY327_FMwebp_QL65_.jpg', desc: 'Leading noise cancellation with dual processor control and exceptional call quality.' },
-        { id: 3, name: 'MacBook Air M3', price: 114900, img: 'https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UY327_FMwebp_QL65_.jpg', desc: 'Strikingly thin and fast so you can work, play or create anything — anywhere.' }
+        { id: 1, name: 'iPhone 15 Pro', price: 129900, img: 'https://m.media-amazon.com/images/I/81Sig6bi1GL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 2, name: 'Sony XM5 Headphones', price: 29990, img: 'https://m.media-amazon.com/images/I/51aB7hrGRRL._AC_UY327_FMwebp_QL65_.jpg' }
     ];
 
-    let currentUser = JSON.parse(localStorage.getItem('amz_user')) || null;
+    let user = JSON.parse(localStorage.getItem('amz_user'));
     let cart = [];
 
-    // --- NAVIGATION ---
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 'accountPage') renderAccount();
+        window.scrollTo(0,0);
     }
 
-    // --- AUTH LOGIC ---
     function handleLogin() {
-        const email = document.getElementById('loginEmail').value;
-        if(!email.includes('@')) return alert("Enter valid email");
-        currentUser = { email: email };
-        localStorage.setItem('amz_user', JSON.stringify(currentUser));
-        renderAccount();
-        alert("Welcome back!");
+        user = { email: document.getElementById('loginEmail').value };
+        localStorage.setItem('amz_user', JSON.stringify(user));
+        document.getElementById('userGreet').innerText = "Hello, " + user.email.split('@')[0];
         showPage('homePage');
     }
 
-    function handleLogout() {
-        currentUser = null;
-        localStorage.removeItem('amz_user');
-        cart = [];
-        updateCartUI();
-        renderAccount();
-        showPage('homePage');
-    }
-
-    function renderAccount() {
-        const userGreet = document.getElementById('userGreet');
-        if(currentUser) {
-            userGreet.innerText = `Hello, ${currentUser.email.split('@')[0]}`;
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('userInfo').style.display = 'block';
-            document.getElementById('displayEmail').innerText = currentUser.email;
-        } else {
-            userGreet.innerText = "Hello, Sign in";
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('userInfo').style.display = 'none';
-        }
-    }
-
-    // --- PRODUCT LOGIC ---
     function renderMain() {
         const grid = document.getElementById('mainGrid');
         products.forEach(p => {
-            grid.innerHTML += `
-                <div class="card" onclick="openProduct(${p.id})">
-                    <img src="${p.img}">
-                    <h4 style="margin:10px 0;">${p.name}</h4>
-                    <p class="btn btn-yellow" style="text-align:center;">View Details</p>
-                </div>
-            `;
+            grid.innerHTML += `<div class="card" onclick="openProduct(${p.id})"><img src="${p.img}"><h4>${p.name}</h4><p>₹${p.price.toLocaleString()}</p></div>`;
         });
     }
 
     function openProduct(id) {
         const p = products.find(x => x.id === id);
-        const detail = document.getElementById('productDetail');
-        detail.innerHTML = `
-            <div style="text-align:center;"><img src="${p.img}" style="width:100%;"></div>
+        document.getElementById('productDetail').innerHTML = `
+            <img src="${p.img}" style="width:300px;">
             <div>
-                <h1>${p.name}</h1>
-                <p style="color:var(--link); margin:10px 0;">Visit the Store</p>
-                <hr><p style="margin:20px 0; line-height:1.6;">${p.desc}</p>
-            </div>
-            <div class="buy-box">
-                <h2 style="margin-bottom:10px;">₹${p.price.toLocaleString()}</h2>
-                <p style="color:green;">In Stock</p>
+                <h1>${p.name}</h1><br>
+                <p>₹${p.price.toLocaleString()}</p><br>
                 <button class="btn btn-yellow" onclick="addToCart(${p.id})">Add to Cart</button>
-                <button class="btn btn-orange">Buy Now</button>
             </div>
         `;
         showPage('descPage');
     }
 
-    // --- CART LOGIC ---
     function addToCart(id) {
-        if(!currentUser) {
-            alert("Please Sign-In to add items to your cart.");
-            showPage('accountPage');
-            return;
-        }
-        const p = products.find(x => x.id === id);
-        cart.push(p);
-        updateCartUI();
-        alert("Added to Cart!");
+        if(!user) return showPage('accountPage');
+        cart.push(products.find(x => x.id === id));
+        updateCart();
+        alert("Added to cart!");
     }
 
-    function updateCartUI() {
+    function updateCart() {
         const list = document.getElementById('cartList');
-        list.innerHTML = cart.length ? '' : 'Your cart is empty.';
-        let total = 0;
+        list.innerHTML = ''; let total = 0;
         cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `
-                <div class="cart-item">
-                    <img src="${item.img}" width="60">
-                    <div>
-                        <p style="font-size:13px; font-weight:bold;">${item.name}</p>
-                        <p>₹${item.price.toLocaleString()}</p>
-                        <small onclick="removeItem(${i})" style="color:blue; cursor:pointer;">Delete</small>
-                    </div>
-                </div>
-            `;
+            list.innerHTML += `<div style="display:flex; gap:10px; margin-bottom:10px;"><img src="${item.img}" width="50"><div><p>${item.name}</p><b>₹${item.price}</b></div></div>`;
         });
-        document.getElementById('cartTotal').innerText = total.toLocaleString();
+        document.getElementById('cartSubtotal').innerText = total.toLocaleString();
         document.getElementById('cartCount').innerText = cart.length;
+        document.getElementById('sumItems').innerText = '₹' + total.toLocaleString();
+        document.getElementById('sumTotal').innerText = '₹' + total.toLocaleString();
     }
 
-    function removeItem(i) { cart.splice(i,1); updateCartUI(); }
-
-    function openCart() { 
-        document.getElementById('sidebar').classList.add('open'); 
-        document.getElementById('overlay').style.display = 'block';
-    }
-    function closeCart() { 
-        document.getElementById('sidebar').classList.remove('open'); 
-        document.getElementById('overlay').style.display = 'none';
+    function goToCheckout() {
+        if(!cart.length) return alert("Cart is empty");
+        closeCart();
+        showPage('checkoutPage');
     }
 
-    function checkoutAlert() {
-        if(cart.length === 0) return alert("Cart is empty");
-        alert("Proceeding to payment Gateway...");
+    function placeOrder() {
+        if(!document.getElementById('shipName').value) return alert("Enter shipping name");
+        alert("Thank you! Order placed successfully.");
+        cart = []; updateCart();
+        showPage('homePage');
     }
 
-    // Initialize
+    function openCart() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').style.display='block'; }
+    function closeCart() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').style.display='none'; }
+
     renderMain();
-    renderAccount();
+    if(user) document.getElementById('userGreet').innerText = "Hello, " + user.email.split('@')[0];
 </script>
 </body>
 </html>
