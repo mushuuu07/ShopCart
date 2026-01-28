@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Clone - Full UI</title>
+    <style>
+        :root {
+            --amz-blue: #131921;
+            --amz-light: #232f3e;
+            --amz-yellow: #febd69;
+            --amz-orange: #f3a847;
+            --bg: #eaeded;
+            --text: #0f1111;
+            --link: #007185;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); }
+
+        /* --- HEADER & NAV --- */
+        header { background: var(--amz-blue); color: white; position: sticky; top: 0; z-index: 1000; }
+        .nav-main { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 60px; }
+        .logo { font-size: 22px; font-weight: bold; cursor: pointer; border: 1px solid transparent; padding: 5px; }
+        .logo:hover { border-color: white; }
+        
+        .search-bar { flex-grow: 1; display: flex; height: 40px; }
+        .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: 4px 0 0 4px; outline: none; }
+        .search-icon { background: var(--amz-yellow); width: 45px; display: flex; justify-content: center; align-items: center; border-radius: 0 4px 4px 0; cursor: pointer; color: #333; }
+
+        .nav-right { display: flex; gap: 15px; }
+        .nav-item { cursor: pointer; padding: 5px 10px; border: 1px solid transparent; }
+        .nav-item:hover { border-color: white; }
+        .nav-item span { display: block; font-size: 12px; color: #ccc; }
+
+        .nav-sub { background: var(--amz-light); display: flex; gap: 15px; padding: 8px 20px; font-size: 14px; }
+        .nav-sub span { cursor: pointer; border: 1px solid transparent; padding: 2px 5px; }
+        .nav-sub span:hover { border-color: white; }
+
+        /* --- PAGES --- */
+        .page { display: none; min-height: 80vh; padding-bottom: 50px; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- HOME PAGE --- */
+        .hero { 
+            height: 350px; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, var(--bg)), 
+            url('https://images-eu.ssl-images-amazon.com/images/G/31/img22/WES/July/MSO/PC_Hero_3000x1200_1._CB632151608_.jpg');
+            background-size: cover; background-position: center;
+        }
+        .intro-container { max-width: 1200px; margin: -100px auto 20px; padding: 0 20px; text-align: center; }
+        .intro-box { background: white; padding: 40px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .best-sellers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        /* --- PRODUCT CARDS --- */
+        .card { background: white; padding: 15px; border-radius: 2px; cursor: pointer; transition: 0.2s; }
+        .card:hover { transform: translateY(-3px); }
+        .card img { width: 100%; height: 200px; object-fit: contain; }
+        .card h4 { margin: 10px 0; font-weight: 500; height: 40px; overflow: hidden; }
+        .price { font-size: 20px; font-weight: bold; }
+
+        /* --- PRODUCT DESCRIPTION PAGE --- */
+        .details-container { max-width: 1200px; margin: 30px auto; background: white; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .details-img img { width: 100%; max-height: 500px; object-fit: contain; }
+        .details-info h1 { font-size: 24px; margin-bottom: 10px; }
+        .rating { color: #ffa41c; margin-bottom: 15px; }
+        .desc-text { line-height: 1.6; margin: 20px 0; border-top: 1px solid #eee; padding-top: 20px; }
+        .buy-box { border: 1px solid #ddd; padding: 20px; border-radius: 8px; width: 250px; }
+        .btn { width: 100%; padding: 10px; border-radius: 20px; border: 1px solid; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        .btn-yellow { background: #ffd814; border-color: #fcd200; }
+        .btn-orange { background: #ffa41c; border-color: #ff8f00; }
+
+        /* --- FOOTER --- */
+        footer { background: var(--amz-light); color: white; padding: 40px 20px; margin-top: 50px; }
+        .footer-content { max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .footer-col h3 { font-size: 16px; margin-bottom: 15px; }
+        .footer-col p { font-size: 14px; color: #ccc; cursor: pointer; margin-bottom: 8px; }
+        .footer-bottom { text-align: center; border-top: 1px solid #3a4553; margin-top: 30px; padding-top: 20px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="nav-main">
+        <div class="logo" onclick="showPage('homePage')">amazon.in</div>
+        <div class="nav-item"><span>Deliver to</span><strong>India</strong></div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search Amazon.in" id="searchInp">
+            <div class="search-icon">🔍</div>
+        </div>
+        <div class="nav-right">
+            <div class="nav-item" onclick="showPage('homePage')"><span>Hello, Guest</span><strong>Account & Lists</strong></div>
+            <div class="nav-item" onclick="toggleCart()"><span>Returns</span><strong>& Orders</strong></div>
+            <div class="nav-item" onclick="toggleCart()"><strong>🛒 Cart (<span id="cartCount">0</span>)</strong></div>
+        </div>
+    </nav>
+    <nav class="nav-sub">
+        <span onclick="showPage('homePage')">Home</span>
+        <span onclick="showPage('shopPage')">All Products</span>
+        <span>Best Sellers</span>
+        <span>Electronics</span>
+        <span>Customer Service</span>
+    </nav>
+</header>
+
+<section id="homePage" class="page active">
+    <div class="hero"></div>
+    <div class="intro-container">
+        <div class="intro-box">
+            <h1>Welcome to Amazon Clone</h1>
+            <p style="margin-top:10px; color:#555;">Discover millions of products with fast delivery and great prices. Start your shopping journey today!</p>
+            <button class="btn btn-yellow" style="width:200px; margin-top:20px;" onclick="showPage('shopPage')">Shop Now</button>
+        </div>
+    </div>
+    <h2 style="text-align:center; margin: 40px 0 20px;">Today's Best Sellers</h2>
+    <div class="best-sellers" id="homeBestSellers"></div>
+</section>
+
+<section id="shopPage" class="page">
+    <div style="max-width:1200px; margin:20px auto; padding:0 20px;">
+        <h2>All Results</h2>
+        <div class="best-sellers" id="allProductsGrid" style="margin-left:0; margin-right:0; padding-left:0; padding-right:0;"></div>
+    </div>
+</section>
+
+<section id="descPage" class="page">
+    <div class="details-container" id="productDetail">
+        </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-col">
+            <h3>Get to Know Us</h3>
+            <p>About Us</p><p>Careers</p><p>Press Releases</p>
+        </div>
+        <div class="footer-col">
+            <h3>Connect with Us</h3>
+            <p>Facebook</p><p>Twitter</p><p>Instagram</p>
+        </div>
+        <div class="footer-col">
+            <h3>Make Money with Us</h3>
+            <p>Sell on Amazon</p><p>Supply to Amazon</p><p>Become an Affiliate</p>
+        </div>
+        <div class="footer-col">
+            <h3>Let Us Help You</h3>
+            <p>Your Account</p><p>100% Purchase Protection</p><p>Help</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 1996-2026, Amazon.in, Inc. or its affiliates</p>
+    </div>
+</footer>
+
+<script>
+    const products = [
+        { id: 1, name: 'Apple iPhone 15 Pro (128 GB) - Natural Titanium', price: 127990, rating: 4.5, reviews: '12,402', img: 'https://m.media-amazon.com/images/I/81Sig6bi1GL._AC_UY327_FMwebp_QL65_.jpg', desc: 'A dramatic design. A powerhouse chip. A more versatile Pro camera system. All-new Action button. Titanium. So strong. So light. So Pro.' },
+        { id: 2, name: 'Sony WH-1000XM5 Wireless Headphones', price: 29990, rating: 4.8, reviews: '5,112', img: 'https://m.media-amazon.com/images/I/51aB7hrGRRL._AC_UY327_FMwebp_QL65_.jpg', desc: 'Industry-leading noise cancellation. Integrated Processor V1. Exceptional sound quality. 30 hours of battery life.' },
+        { id: 3, name: 'Samsung Galaxy S24 Ultra', price: 129999, rating: 4.7, reviews: '3,890', img: 'https://m.media-amazon.com/images/I/71RVuS3q9QL._AC_UY327_FMwebp_QL65_.jpg', desc: 'Meet Galaxy S24 Ultra, the ultimate form of Galaxy Ultra with a new titanium exterior and a 17.25cm (6.8") flat display.' },
+        { id: 4, name: 'Apple 2024 MacBook Air M3 Laptop', price: 114900, rating: 4.9, reviews: '840', img: 'https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UY327_FMwebp_QL65_.jpg', desc: 'The M3 chip makes the 13-inch MacBook Air even more capable. With up to 18 hours of battery life, you can take it anywhere.' },
+        { id: 5, name: 'Kindle Paperwhite (16 GB)', price: 13999, rating: 4.6, reviews: '25,600', img: 'https://m.media-amazon.com/images/I/71X8InX96ML._AC_UY327_FMwebp_QL65_.jpg', desc: 'Now with a 6.8” display and thinner borders, adjustable warm light, up to 10 weeks of battery life.' }
+    ];
+
+    let cartCount = 0;
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function renderGrids() {
+        const homeGrid = document.getElementById('homeBestSellers');
+        const shopGrid = document.getElementById('allProductsGrid');
+        
+        products.forEach(p => {
+            const card = `<div class="card" onclick="openProduct(${p.id})">
+                <img src="${p.img}">
+                <h4>${p.name}</h4>
+                <p style="color:#ffa41c">★★★★☆ (${p.reviews})</p>
+                <p class="price">₹${p.price.toLocaleString()}</p>
+            </div>`;
+            shopGrid.innerHTML += card;
+            if(p.id <= 4) homeGrid.innerHTML += card;
+        });
+    }
+
+    function openProduct(id) {
+        const p = products.find(item => item.id === id);
+        const detail = document.getElementById('productDetail');
+        
+        detail.innerHTML = `
+            <div class="details-img"><img src="${p.img}"></div>
+            <div class="details-info">
+                <h1>${p.name}</h1>
+                <div class="rating">★★★★☆ ${p.rating} / 5 | ${p.reviews} ratings</div>
+                <hr>
+                <p style="font-size: 24px; margin-top:15px;">₹${p.price.toLocaleString()}</p>
+                <p style="color:#565959; font-size:14px;">Inclusive of all taxes</p>
+                
+                <div class="desc-text">
+                    <strong>About this item:</strong>
+                    <p>${p.desc}</p>
+                </div>
+
+                <div class="buy-box">
+                    <p class="price">₹${p.price.toLocaleString()}</p>
+                    <p style="color:green; margin:10px 0;">In Stock.</p>
+                    <button class="btn btn-yellow" onclick="addToCart()">Add to Cart</button>
+                    <button class="btn btn-orange">Buy Now</button>
+                </div>
+            </div>
+        `;
+        showPage('descPage');
+    }
+
+    function addToCart() {
+        cartCount++;
+        document.getElementById('cartCount').innerText = cartCount;
+        alert("Product added to cart!");
+    }
+
+    function toggleCart() {
+        alert("This would open your shopping cart!");
+    }
+
+    // Initialize
+    renderGrids();
+</script>
+</body>
+</html>
