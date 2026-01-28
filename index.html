@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon Clone - 24+ Products</title>
+    <title>Amazon Clone - Full Flow</title>
     <style>
         :root {
             --amz-blue: #131921; --amz-light: #232f3e; --amz-yellow: #febd69;
@@ -19,7 +19,7 @@
         .logo { font-size: 22px; font-weight: bold; cursor: pointer; }
         .search-bar { flex-grow: 1; display: flex; height: 40px; }
         .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: 4px 0 0 4px; outline: none; }
-        .search-btn { background: var(--amz-yellow); width: 45px; display: flex; justify-content: center; align-items: center; border-radius: 0 4px 4px 0; cursor: pointer; }
+        .search-btn { background: var(--amz-yellow); width: 45px; display: flex; justify-content: center; align-items: center; border-radius: 0 4px 4px 0; }
         .nav-right { display: flex; gap: 10px; }
         .nav-item { cursor: pointer; padding: 5px 10px; border: 1px solid transparent; }
         .nav-item span { display: block; font-size: 12px; color: #ccc; }
@@ -27,42 +27,43 @@
         .nav-sub { background: var(--amz-light); display: flex; gap: 20px; padding: 8px 20px; font-size: 14px; color: white; }
         .nav-sub span { cursor: pointer; }
 
-        /* --- PAGE SYSTEM --- */
+        /* --- PAGES --- */
         .page { display: none; min-height: 80vh; padding: 20px; animation: fadeIn 0.2s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- HOME PAGE --- */
-        .hero { height: 300px; background: url('https://images-eu.ssl-images-amazon.com/images/G/31/img22/WES/July/MSO/PC_Hero_3000x1200_1._CB632151608_.jpg') center/cover; margin: -20px -20px 20px -20px; }
-        .welcome-box { background: white; padding: 30px; margin-top: -100px; position: relative; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 1200px; margin-left: auto; margin-right: auto; }
+        /* --- HOME --- */
+        .hero { height: 250px; background: url('https://images-eu.ssl-images-amazon.com/images/G/31/img22/WES/July/MSO/PC_Hero_3000x1200_1._CB632151608_.jpg') center/cover; margin: -20px -20px 20px -20px; }
+        .welcome { background: white; padding: 30px; margin-top: -80px; position: relative; max-width: 1000px; margin-left: auto; margin-right: auto; text-align: center; border-radius: 4px; }
 
-        /* --- PRODUCTS PAGE --- */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; max-width: 1300px; margin: auto; }
-        .p-card { background: white; padding: 15px; border: 1px solid #ddd; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
-        .p-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
-        .p-card h4 { font-size: 15px; margin-bottom: 8px; height: 40px; overflow: hidden; }
-        .p-card .price { font-size: 18px; font-weight: bold; color: #B12704; }
+        /* --- PRODUCT GRID --- */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .p-card { background: white; padding: 15px; border: 1px solid #ddd; cursor: pointer; }
+        .p-card img { width: 100%; height: 180px; object-fit: contain; }
 
-        /* --- DESCRIPTION PAGE --- */
-        .desc-container { max-width: 1100px; margin: auto; background: white; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; border-radius: 8px; }
-        .desc-img img { width: 100%; max-height: 500px; object-fit: contain; }
-        .desc-content h2 { margin-bottom: 15px; }
-        .desc-content .price-large { font-size: 28px; color: #B12704; margin-bottom: 20px; display: block; }
-        .desc-content p { line-height: 1.6; color: #333; }
+        /* --- DESCRIPTION --- */
+        .desc-layout { max-width: 1100px; margin: auto; background: white; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .desc-img img { width: 100%; max-height: 450px; object-fit: contain; }
+
+        /* --- CHECKOUT --- */
+        .checkout-box { max-width: 600px; margin: auto; background: white; padding: 30px; border: 1px solid #ddd; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #888; border-radius: 3px; }
+
+        /* --- PROFILE --- */
+        .profile-layout { max-width: 800px; margin: auto; display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        .box { background: white; padding: 20px; border: 1px solid #ddd; }
 
         /* --- CART SIDEBAR --- */
         .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
-        .cart-sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; padding: 20px; transition: 0.3s; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
+        .cart-sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; padding: 20px; transition: 0.3s; }
         .cart-sidebar.open { right: 0; }
-        .cart-item { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-
-        /* --- PROFILE --- */
-        .profile-card { max-width: 500px; margin: auto; background: white; padding: 30px; border: 1px solid #ddd; }
 
         .btn { width: 100%; padding: 12px; border-radius: 20px; border: 1px solid #a88734; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .btn-yellow { background: #ffd814; }
         .btn-orange { background: #ffa41c; }
-        
+
         footer { background: var(--amz-light); color: white; text-align: center; padding: 30px; margin-top: 50px; }
     </style>
 </head>
@@ -71,10 +72,10 @@
 <header>
     <div class="nav-main">
         <div class="logo" onclick="showPage('homePage')">amazon.in</div>
-        <div class="search-bar"><input type="text" placeholder="Search 20+ items..."><div class="search-btn">🔍</div></div>
+        <div class="search-bar"><input type="text" placeholder="Search..."><div class="search-btn">🔍</div></div>
         <div class="nav-right">
-            <div class="nav-item" onclick="handleProfileClick()">
-                <span id="nav-user-name">Hello, Sign in</span>
+            <div class="nav-item" onclick="handleAccountNav()">
+                <span id="nav-user">Hello, Sign in</span>
                 <strong>Account & Lists</strong>
             </div>
             <div class="nav-item" onclick="openCart()">
@@ -85,188 +86,206 @@
     </div>
     <div class="nav-sub">
         <span onclick="showPage('homePage')">Home</span>
-        <span onclick="showPage('productsPage')">All Products</span>
-        <span>Mobiles</span>
-        <span>Kitchen</span>
-        <span>Office</span>
+        <span onclick="showPage('productListPage')">All Products</span>
     </div>
 </header>
 
 <section id="homePage" class="page active">
     <div class="hero"></div>
-    <div class="welcome-box">
-        <h1>Welcome to the Mega Store</h1>
-        <p>Explore our vast collection of 24+ premium products across all categories.</p>
-        <button class="btn btn-yellow" style="width: 250px;" onclick="showPage('productsPage')">Shop the Full Catalog</button>
+    <div class="welcome">
+        <h1>Welcome to Amazon Clone</h1>
+        <p>Sign in to your account and browse our expanded catalog of 20+ items.</p>
+        <button class="btn btn-yellow" style="width:200px;" onclick="showPage('productListPage')">Start Shopping</button>
     </div>
 </section>
 
-<section id="productsPage" class="page">
-    <h2 style="text-align:center; margin-bottom:30px;">Our Full Catalog</h2>
-    <div class="product-grid" id="product-list"></div>
+<section id="productListPage" class="page">
+    <h2 style="text-align:center; margin-bottom:20px;">Full Product Catalog</h2>
+    <div class="product-grid" id="grid-container"></div>
 </section>
 
-<section id="descPage" class="page">
-    <div class="desc-container" id="desc-view"></div>
+<section id="descriptionPage" class="page">
+    <div class="desc-layout" id="desc-container"></div>
 </section>
 
-<section id="userProfilePage" class="page">
-    <div class="profile-card">
-        <h3>User Settings</h3><br>
-        <p>Email: <span id="prof-email"></span></p>
-        <p>Display Name: <input type="text" id="new-name" style="width:100%; padding:8px; margin:10px 0;"></p>
-        <button class="btn btn-yellow" onclick="updateName()">Update Name</button>
-        <button class="btn" style="background:#eee; border-color:#ccc;" onclick="logout()">Sign Out</button>
-        <hr style="margin:20px 0;">
-        <h4>Saved Addresses</h4>
-        <div id="saved-addr">No addresses yet.</div>
+<section id="checkoutPage" class="page">
+    <div class="checkout-box">
+        <h2>Select Delivery Address</h2><br>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="chk-name" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label>Street Address</label>
+            <input type="text" id="chk-addr" placeholder="House no, Street, Area">
+        </div>
+        <div class="form-group">
+            <label>City</label>
+            <input type="text" id="chk-city">
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="chk-save" checked> <label style="display:inline;">Save to profile addresses</label>
+        </div>
+        <button class="btn btn-orange" onclick="finalizeOrder()">Save Address & Place Order</button>
+    </div>
+</section>
+
+<section id="profilePage" class="page">
+    <div class="profile-layout">
+        <div class="box">
+            <h3>Your Account</h3><br>
+            <p><strong>Email:</strong> <span id="prof-email"></span></p>
+            <button class="btn" style="background:#eee;" onclick="logout()">Sign Out</button>
+        </div>
+        <div class="box">
+            <h3>Update Profile</h3><br>
+            <label>Display Name:</label>
+            <input type="text" id="prof-name-input" style="width:100%; padding:8px; margin:10px 0;">
+            <button class="btn btn-yellow" onclick="updateProfileName()">Save Changes</button>
+            <hr style="margin:20px 0;">
+            <h3>Your Saved Addresses</h3>
+            <div id="prof-addresses-list"></div>
+        </div>
     </div>
 </section>
 
 <div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-sidebar" id="sidebar">
     <h3>Shopping Cart</h3><br>
-    <div id="cart-items" style="height:75%; overflow-y:auto;"></div>
-    <div style="border-top:1px solid #ddd; padding-top:10px;">
-        <h4 id="cart-total-price">Total: ₹0</h4>
-        <button class="btn btn-orange" onclick="alert('Proceeding to Address page...')">Checkout</button>
+    <div id="cart-list" style="height:70%; overflow-y:auto;"></div>
+    <div style="border-top:1px solid #ddd; padding-top:15px;">
+        <h4 id="cart-total">Total: ₹0</h4>
+        <button class="btn btn-yellow" onclick="goToCheckout()">Proceed to Buy</button>
     </div>
 </div>
 
-<footer><p>© 2026 Amazon Clone - Expanded Catalog</p></footer>
+<footer><p>© 2026 Amazon Clone System</p></footer>
 
 <script>
-    const inventory = [
-        { id: 1, name: "Apple iPhone 15 Pro", price: 129900, cat: "Tech", img: "https://m.media-amazon.com/images/I/81Sig6bi1GL._AC_UY327_FMwebp_QL65_.jpg", desc: "Titanium design, A17 Pro chip, and a 48MP main camera for incredible photos." },
-        { id: 2, name: "Sony WH-1000XM5", price: 29990, cat: "Tech", img: "https://m.media-amazon.com/images/I/51aB7hrGRRL._AC_UY327_FMwebp_QL65_.jpg", desc: "Industry-leading noise cancellation with two processors controlling 8 microphones." },
-        { id: 3, name: "MacBook Air M3", price: 114900, cat: "Tech", img: "https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UY327_FMwebp_QL65_.jpg", desc: "The M3 chip makes the 13-inch MacBook Air even more capable with up to 18 hours of battery." },
-        { id: 4, name: "Samsung Galaxy S24 Ultra", price: 129999, cat: "Tech", img: "https://m.media-amazon.com/images/I/71RVuS3q9QL._AC_UY327_FMwebp_QL65_.jpg", desc: "The ultimate form of Galaxy Ultra with a new titanium exterior and a 6.8-inch flat display." },
-        { id: 5, name: "Logitech MX Master 3S", price: 9995, cat: "Office", img: "https://m.media-amazon.com/images/I/61ni3t1ryQL._AC_UY327_FMwebp_QL65_.jpg", desc: "Quiet clicks, 8k DPI tracking, and ergonomic design for all-day productivity." },
-        { id: 6, name: "Kindle Paperwhite (16GB)", price: 13999, cat: "Tech", img: "https://m.media-amazon.com/images/I/71X8InX96ML._AC_UY327_FMwebp_QL65_.jpg", desc: "Purpose-built for reading with a 6.8-inch display and adjustable warm light." },
-        { id: 7, name: "Echo Dot (5th Gen)", price: 4499, cat: "Home", img: "https://m.media-amazon.com/images/I/81S8A69W4dL._AC_UY327_FMwebp_QL65_.jpg", desc: "Our best-sounding Echo Dot yet with improved audio for clearer vocals and deeper bass." },
-        { id: 8, name: "Philips Air Fryer XL", price: 8999, cat: "Kitchen", img: "https://m.media-amazon.com/images/I/71Yv0Ym9N3L._AC_UL480_FMwebp_QL65_.jpg", desc: "Healthy frying with Rapid Air technology. Fry, bake, grill, and roast with up to 90% less fat." },
-        { id: 9, name: "Nespresso Pixie Coffee Maker", price: 15400, cat: "Kitchen", img: "https://m.media-amazon.com/images/I/61p-3jC7ZLL._AC_UL480_FMwebp_QL65_.jpg", desc: "The Pixie espresso machine is the smallest Nespresso machine, yet incredibly powerful." },
-        { id: 10, name: "Dell 27-inch 4K Monitor", price: 32000, cat: "Office", img: "https://m.media-amazon.com/images/I/71XvO-rW1AL._AC_UY327_FMwebp_QL65_.jpg", desc: "Experience 4K clarity with HDR support and USB-C connectivity for a clean setup." },
-        { id: 11, name: "Razer BlackWidow V4", price: 16990, cat: "Office", img: "https://m.media-amazon.com/images/I/71m9O6u7I2L._AC_UY327_FMwebp_QL65_.jpg", desc: "Mechanical gaming keyboard with Razer Chroma RGB and dedicated macro keys." },
-        { id: 12, name: "Bose QuietComfort Ultra", price: 35900, cat: "Tech", img: "https://m.media-amazon.com/images/I/516mQ68I6UL._AC_UY327_FMwebp_QL65_.jpg", desc: "World-class noise cancellation and spatial audio for an immersive listening experience." },
-        { id: 13, name: "Dyson V11 Absolute", price: 45900, cat: "Home", img: "https://m.media-amazon.com/images/I/61m1vO-T3hL._AC_UL480_FMwebp_QL65_.jpg", desc: "Twice the suction of any cord-free vacuum. Intelligently optimizes suction and run time." },
-        { id: 14, name: "Fitbit Charge 6", price: 14999, cat: "Tech", img: "https://m.media-amazon.com/images/I/61XnUvN+S7L._AC_UY327_FMwebp_QL65_.jpg", desc: "Our most accurate heart rate on a tracker yet. Includes Google Maps and Wallet." },
-        { id: 15, name: "KitchenAid Artisan Stand Mixer", price: 54990, cat: "Kitchen", img: "https://m.media-amazon.com/images/I/71o0T4S6HGL._AC_UL480_FMwebp_QL65_.jpg", desc: "Iconic design and powerful performance. Perfect for making dough and batter." },
-        { id: 16, name: "Seagate 2TB Portable Drive", price: 5800, cat: "Office", img: "https://m.media-amazon.com/images/I/81tjLksKixL._AC_UY327_FMwebp_QL65_.jpg", desc: "Easily store and access 2TB of content on the go with this compact external hard drive." },
-        { id: 17, name: "GoPro HERO12 Black", price: 37990, cat: "Tech", img: "https://m.media-amazon.com/images/I/61X9qF582HL._AC_UY327_FMwebp_QL65_.jpg", desc: "High dynamic range video and photos with incredible stabilization for your adventures." },
-        { id: 18, name: "Marshall Emberton II", price: 14999, cat: "Home", img: "https://m.media-amazon.com/images/I/71B93+p7M3L._AC_UY327_FMwebp_QL65_.jpg", desc: "Compact portable speaker with the loud and vibrant sound only Marshall can deliver." },
-        { id: 19, name: "Instant Pot Duo 7-in-1", price: 9990, cat: "Kitchen", img: "https://m.media-amazon.com/images/I/61Z6-D7G-2L._AC_UL480_FMwebp_QL65_.jpg", desc: "Pressure cooker, slow cooker, rice cooker, steamer, sauté pan, yogurt maker and warmer." },
-        { id: 20, name: "ASUS ROG Zephyrus G14", price: 145000, cat: "Tech", img: "https://m.media-amazon.com/images/I/71657UrqZfL._AC_UY327_FMwebp_QL65_.jpg", desc: "Powerful 14-inch gaming laptop with Ryzen 9 and RTX 40-series graphics." },
-        { id: 21, name: "Moleskine Classic Notebook", price: 1800, cat: "Office", img: "https://m.media-amazon.com/images/I/61R-pT1Y9GL._AC_UL480_FMwebp_QL65_.jpg", desc: "The iconic notebook for ideas, sketches, and notes. High-quality paper." },
-        { id: 22, name: "NutriBullet Pro Blunder", price: 6500, cat: "Kitchen", img: "https://m.media-amazon.com/images/I/61m1vO-T3hL._AC_UL480_FMwebp_QL65_.jpg", desc: "Essential personal blender for smoothies and nutrition extraction." },
-        { id: 23, name: "Steelcase Gesture Chair", price: 85000, cat: "Office", img: "https://m.media-amazon.com/images/I/71m9O6u7I2L._AC_UY327_FMwebp_QL65_.jpg", desc: "The ultimate ergonomic office chair designed to support all postures." },
-        { id: 24, name: "Ring Video Doorbell", price: 9999, cat: "Home", img: "https://m.media-amazon.com/images/I/51H24ARSejL._AC_UY327_FMwebp_QL65_.jpg", desc: "See, hear, and speak to visitors from anywhere with 1080p HD video." }
-    ];
+    const inventory = Array.from({length: 24}, (_, i) => ({
+        id: i + 1,
+        name: `Product ${i + 1}: ${['Smartphone', 'Headphones', 'Laptop', 'Watch', 'Blender'][i % 5]}`,
+        price: 500 + (i * 1200),
+        img: 'https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UY327_FMwebp_QL65_.jpg',
+        desc: `High quality item ${i + 1}. Built to last and highly rated by customers worldwide. Includes 1 year warranty.`
+    }));
 
     let user = JSON.parse(localStorage.getItem('amz_user'));
     let cart = [];
 
-    // Navigation
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         window.scrollTo(0,0);
     }
 
-    // Auth
-    function handleProfileClick() {
-        if(!user) {
-            let email = prompt("Enter email to Sign In:");
-            if(email) {
-                user = { email: email, name: email.split('@')[0], addresses: [] };
-                localStorage.setItem('amz_user', JSON.stringify(user));
-                updateHeader();
+    // --- AUTH / PROFILE ---
+    function handleAccountNav() {
+        if (!user) {
+            const email = prompt("Sign In - Enter Email:");
+            if (email) {
+                user = { email, name: email.split('@')[0], addresses: [] };
+                saveUser();
+                updateUI();
             }
         } else {
             document.getElementById('prof-email').innerText = user.email;
-            document.getElementById('new-name').value = user.name;
-            showPage('userProfilePage');
+            document.getElementById('prof-name-input').value = user.name;
+            renderAddresses();
+            showPage('profilePage');
         }
     }
 
-    function updateName() {
-        user.name = document.getElementById('new-name').value;
-        localStorage.setItem('amz_user', JSON.stringify(user));
-        updateHeader();
-        alert("Name updated!");
+    function updateProfileName() {
+        user.name = document.getElementById('prof-name-input').value;
+        saveUser(); updateUI(); alert("Name Updated!");
     }
 
-    function logout() {
-        user = null; localStorage.removeItem('amz_user');
-        updateHeader(); showPage('homePage');
+    function renderAddresses() {
+        const list = document.getElementById('prof-addresses-list');
+        list.innerHTML = user.addresses.length ? '' : 'No saved addresses.';
+        user.addresses.forEach(a => list.innerHTML += `<div style="background:#f6f6f6; border:1px solid #ddd; padding:10px; margin-top:5px;">${a}</div>`);
     }
 
-    function updateHeader() {
-        document.getElementById('nav-user-name').innerText = user ? `Hello, ${user.name}` : "Hello, Sign in";
-    }
+    function logout() { user = null; localStorage.removeItem('amz_user'); updateUI(); showPage('homePage'); }
+    function saveUser() { localStorage.setItem('amz_user', JSON.stringify(user)); }
+    function updateUI() { document.getElementById('nav-user').innerText = user ? `Hello, ${user.name}` : "Hello, Sign in"; }
 
-    // Products
+    // --- PRODUCT LOGIC ---
     function initProducts() {
-        const list = document.getElementById('product-list');
+        const grid = document.getElementById('grid-container');
         inventory.forEach(p => {
-            list.innerHTML += `
-                <div class="p-card" onclick="openProduct(${p.id})">
-                    <img src="${p.img}">
-                    <div>
-                        <h4>${p.name}</h4>
-                        <p class="price">₹${p.price.toLocaleString()}</p>
-                    </div>
-                </div>
-            `;
+            grid.innerHTML += `<div class="p-card" onclick="openDesc(${p.id})"><img src="${p.img}"><h4>${p.name}</h4><p>₹${p.price.toLocaleString()}</p></div>`;
         });
     }
 
-    function openProduct(id) {
+    function openDesc(id) {
         const p = inventory.find(x => x.id === id);
-        const view = document.getElementById('desc-view');
-        view.innerHTML = `
+        document.getElementById('desc-container').innerHTML = `
             <div class="desc-img"><img src="${p.img}"></div>
-            <div class="desc-content">
-                <h2>${p.name}</h2>
-                <hr><br>
-                <span class="price-large">₹${p.price.toLocaleString()}</span>
-                <p><strong>About this item:</strong><br>${p.desc}</p>
-                <br>
+            <div>
+                <h2>${p.name}</h2><hr><br>
+                <p style="font-size:24px; color:#B12704;">₹${p.price.toLocaleString()}</p><br>
+                <p><strong>Description:</strong><br>${p.desc}</p><br>
                 <button class="btn btn-yellow" onclick="addToCart(${p.id})">Add to Cart</button>
-                <button class="btn btn-orange" onclick="alert('Proceeding to Address...')">Buy Now</button>
+                <button class="btn btn-orange" onclick="buyNow(${p.id})">Buy Now</button>
             </div>
         `;
-        showPage('descPage');
+        showPage('descriptionPage');
     }
 
-    // Cart
+    // --- PURCHASE FLOW ---
     function addToCart(id) {
-        if(!user) return alert("Please Sign In first!");
+        if(!user) return alert("Sign in first!");
         cart.push(inventory.find(x => x.id === id));
         document.getElementById('cart-count').innerText = cart.length;
-        alert("Added to cart!");
+        alert("Added!");
     }
 
+    function buyNow(id) {
+        if(!user) return alert("Sign in first!");
+        cart = [inventory.find(x => x.id === id)];
+        goToCheckout();
+    }
+
+    function goToCheckout() {
+        if(!user) return alert("Sign in first!");
+        if(!cart.length) return alert("Cart empty!");
+        closeCart();
+        showPage('checkoutPage');
+    }
+
+    function finalizeOrder() {
+        const name = document.getElementById('chk-name').value;
+        const addr = document.getElementById('chk-addr').value;
+        const city = document.getElementById('chk-city').value;
+        if(!name || !addr) return alert("Fill all fields");
+
+        if(document.getElementById('chk-save').checked) {
+            user.addresses.push(`${name}, ${addr}, ${city}`);
+            saveUser();
+        }
+        alert("Success! Order placed.");
+        cart = []; document.getElementById('cart-count').innerText = "0";
+        showPage('homePage');
+    }
+
+    // --- CART UI ---
     function openCart() {
-        const list = document.getElementById('cart-items');
-        list.innerHTML = cart.length ? '' : 'Cart is empty.';
-        let total = 0;
+        const list = document.getElementById('cart-list');
+        list.innerHTML = ''; let total = 0;
         cart.forEach(it => {
             total += it.price;
-            list.innerHTML += `<div class="cart-item"><img src="${it.img}" width="50"><div><p>${it.name}</p><b>₹${it.price.toLocaleString()}</b></div></div>`;
+            list.innerHTML += `<p>${it.name} - ₹${it.price}</p>`;
         });
-        document.getElementById('cart-total-price').innerText = "Total: ₹" + total.toLocaleString();
+        document.getElementById('cart-total').innerText = "Total: ₹" + total.toLocaleString();
         document.getElementById('sidebar').classList.add('open');
         document.getElementById('overlay').style.display = 'block';
     }
-
-    function closeCart() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('overlay').style.display = 'none';
-    }
+    function closeCart() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').style.display='none'; }
 
     initProducts();
-    updateHeader();
+    updateUI();
 </script>
 </body>
 </html>
