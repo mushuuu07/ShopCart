@@ -14,339 +14,294 @@
             --text: #0f1111;
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg-gray); color: var(--text); }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg-gray); color: var(--text); overflow-x: hidden; }
 
-        /* --- NAVIGATION --- */
-        header { background: var(--amazon-blue); color: white; }
+        /* --- HEADER --- */
+        header { background: var(--amazon-blue); color: white; position: sticky; top: 0; z-index: 1000; }
+        .nav-top { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 60px; }
         
-        .nav-top {
-            display: flex;
-            align-items: center;
-            padding: 5px 20px;
-            gap: 15px;
-        }
+        .logo { font-size: 22px; font-weight: bold; cursor: pointer; border: 1px solid transparent; padding: 5px 10px; }
+        .logo:hover { border-color: white; }
 
-        .logo { font-size: 22px; font-weight: bold; cursor: pointer; color: white; text-decoration: none; padding: 10px; border: 1px solid transparent; }
-        .logo:hover { border: 1px solid white; }
+        .search-container { flex-grow: 1; display: flex; height: 40px; }
+        .search-container input { flex-grow: 1; border: none; padding: 0 15px; border-radius: 4px 0 0 4px; outline: none; }
+        .search-btn { background: var(--amazon-yellow); width: 45px; display: flex; justify-content: center; align-items: center; border-radius: 0 4px 4px 0; cursor: pointer; color: #333; }
 
-        .search-container {
-            flex-grow: 1;
-            display: flex;
-            height: 40px;
-        }
-
-        .search-container input {
-            flex-grow: 1;
-            border: none;
-            padding: 0 10px;
-            border-radius: 4px 0 0 4px;
-            outline: none;
-        }
-
-        .search-btn {
-            background: var(--amazon-yellow);
-            width: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-        }
-
-        .nav-right { display: flex; gap: 20px; font-size: 14px; }
-        .nav-link { cursor: pointer; padding: 10px; border: 1px solid transparent; }
-        .nav-link:hover { border: 1px solid white; }
+        .nav-right { display: flex; gap: 10px; }
+        .nav-link { cursor: pointer; padding: 8px 10px; border: 1px solid transparent; line-height: 1.2; }
+        .nav-link:hover { border-color: white; }
         .nav-link span { display: block; font-size: 12px; color: #ccc; }
 
-        .nav-bottom {
-            background: var(--amazon-light-blue);
-            display: flex;
-            gap: 15px;
-            padding: 8px 20px;
-            font-size: 14px;
+        .nav-bottom { background: var(--amazon-light-blue); display: flex; gap: 20px; padding: 8px 20px; font-size: 14px; }
+        .nav-bottom span { cursor: pointer; border: 1px solid transparent; padding: 2px 5px; }
+        .nav-bottom span:hover { border-color: white; }
+
+        /* --- PAGES --- */
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- HOME PAGE --- */
+        .hero { 
+            height: 300px; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, var(--bg-gray)), 
+                        url('https://images-eu.ssl-images-amazon.com/images/G/31/img24/Laptop/August/MSO/D149635266_In_Electronics_BAU_Laptops_MSO_PC_Hero_3000x1200._CB566138658_.jpg');
+            background-size: cover; background-position: center; margin: -20px -20px 20px -20px;
         }
+        .category-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: -120px; position: relative; z-index: 2; }
+        .cat-card { background: white; padding: 20px; }
+        .cat-card h2 { font-size: 20px; margin-bottom: 15px; }
+        .cat-card img { width: 100%; height: 250px; object-fit: cover; cursor: pointer; }
+        .cat-card a { color: #007185; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; }
 
-        /* --- HERO --- */
-        .hero-banner {
-            width: 100%;
-            height: 250px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-gray)), url('https://images-eu.ssl-images-amazon.com/images/G/31/img22/WES/July/MSO/PC_Hero_3000x1200_1._CB632151608_.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* --- PRODUCT GRID --- */
-        .main-container { padding: 0 20px; margin-top: -100px; }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            z-index: 1;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .product-card h3 { font-size: 16px; margin-bottom: 8px; height: 40px; overflow: hidden; }
-        .price { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
-        .price span { font-size: 12px; vertical-align: top; }
-
-        .prime-img { width: 50px !important; height: auto !important; margin: 5px 0 !important; }
-
-        .add-btn {
-            background: #ffd814;
-            border: 1px solid #fcd200;
-            border-radius: 20px;
-            padding: 8px;
-            cursor: pointer;
-            margin-top: auto;
-        }
+        /* --- PRODUCT PAGE --- */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+        .product-card { background: white; padding: 15px; display: flex; flex-direction: column; border: 1px solid #ddd; }
+        .product-card img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 10px; }
+        .product-card h4 { font-size: 15px; font-weight: 500; height: 40px; overflow: hidden; margin-bottom: 5px; }
+        .rating { color: #ffa41c; font-size: 14px; margin-bottom: 5px; }
+        .price { font-size: 21px; font-weight: bold; }
+        .prime-icon { width: 50px !important; height: auto !important; margin: 5px 0 !important; }
+        .add-btn { background: #ffd814; border: 1px solid #fcd200; border-radius: 20px; padding: 8px; cursor: pointer; margin-top: auto; font-size: 13px; }
         .add-btn:hover { background: #f7ca00; }
 
         /* --- CART SIDEBAR --- */
-        .cart-sidebar {
-            position: fixed;
-            right: -400px;
-            top: 0;
-            width: 350px;
-            height: 100%;
-            background: white;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
-            z-index: 2000;
-            padding: 20px;
-        }
+        .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
+        .cart-sidebar { position: fixed; right: -350px; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.3s; padding: 20px; display: flex; flex-direction: column; }
         .cart-sidebar.open { right: 0; }
-        .cart-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .cart-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+        .cart-item img { width: 60px; height: 60px; object-fit: contain; }
 
         /* --- MODAL --- */
-        .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:3000; }
-        .modal-content { background:white; width:400px; margin:50px auto; padding:30px; border-radius:8px; }
+        .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:3000; align-items:center; justify-content:center; }
+        .modal-content { background:white; width:90%; max-width:400px; padding:25px; border-radius:8px; }
 
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #067D62;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 4px;
-            display: none;
-            z-index: 5000;
-        }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #067D62; color: white; padding: 12px 25px; border-radius: 4px; display: none; z-index: 4000; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="nav-top">
-        <div class="logo" onclick="showPage('home')">amazon.in</div>
+        <div class="logo" onclick="showPage('homePage')">amazon.in</div>
         <div class="nav-link"><span>Deliver to</span><strong>India</strong></div>
         
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search Amazon" onkeyup="searchProducts()">
-            <div class="search-btn">🔍</div>
+            <input type="text" id="searchInput" placeholder="Search products..." onkeyup="if(event.key==='Enter') searchAction()">
+            <div class="search-btn" onclick="searchAction()">🔍</div>
         </div>
 
         <div class="nav-right">
-            <div class="nav-link" onclick="showPage('orderHistory')"><span>Returns</span><strong>& Orders</strong></div>
+            <div class="nav-link" onclick="showPage('historyPage')"><span>Returns</span><strong>& Orders</strong></div>
             <div class="nav-link" onclick="toggleCart()"><span>Your</span><strong>🛒 Cart (<span id="count">0</span>)</strong></div>
         </div>
     </div>
     <div class="nav-bottom">
-        <span>All</span>
-        <span>Fresh</span>
-        <span>Amazon miniTV</span>
-        <span>Sell</span>
+        <span onclick="showPage('productPage')">All Products</span>
         <span>Best Sellers</span>
         <span>Mobiles</span>
+        <span>Electronics</span>
+        <span>Customer Service</span>
     </div>
 </header>
 
-<section id="home" class="page">
-    <div class="hero-banner"></div>
-    <div class="main-container">
-        <div class="products-grid" id="allProducts"></div>
+<section id="homePage" class="page active">
+    <div class="hero"></div>
+    <div class="category-row">
+        <div class="cat-card">
+            <h2>Latest Smart Devices</h2>
+            <img src="https://m.media-amazon.com/images/I/41-S6Y689pL._SY160_.jpg" onclick="showPage('productPage')">
+            <a href="#" onclick="showPage('productPage')">See more</a>
+        </div>
+        <div class="cat-card">
+            <h2>Up to 70% off | Refurbished</h2>
+            <img src="https://m.media-amazon.com/images/G/31/IMG15/IFA/MSO/PC_QC_758x608_Laptops._SY304_CB582236353_.jpg" onclick="showPage('productPage')">
+            <a href="#" onclick="showPage('productPage')">Shop all deals</a>
+        </div>
+        <div class="cat-card">
+            <h2>Home Essentials</h2>
+            <img src="https://m.media-amazon.com/images/G/31/IMG15/IFA/MSO/PC_QC_758x608_Laptops._SY304_CB582236353_.jpg" onclick="showPage('productPage')">
+            <a href="#" onclick="showPage('productPage')">Explore more</a>
+        </div>
     </div>
 </section>
 
-<section id="orderHistory" class="page" style="display:none; padding: 40px;">
+<section id="productPage" class="page">
+    <h2 id="pageTitle" style="margin-bottom: 20px;">All Results</h2>
+    <div class="products-grid" id="productGrid"></div>
+</section>
+
+<section id="historyPage" class="page">
     <h2>Your Orders</h2>
-    <hr style="margin: 20px 0;">
-    <div id="historyList"></div>
+    <hr style="margin: 15px 0;">
+    <div id="orderList"></div>
 </section>
 
-<div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-        <h3>Shopping Cart</h3>
-        <button onclick="toggleCart()" style="background:none; border:none; font-size:20px; cursor:pointer;">✕</button>
-    </div>
-    <div id="cartItems" style="max-height: 70%; overflow-y: auto;"></div>
-    <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
-        <h4>Subtotal: ₹<span id="total">0</span></h4>
-        <button class="add-btn" style="width:100%; margin-top:15px;" onclick="openCheckout()">Proceed to Buy</button>
+<div class="cart-overlay" id="overlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="sidebar">
+    <h3 style="margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Shopping Cart</h3>
+    <div id="cartContent" style="flex-grow: 1; overflow-y: auto;"></div>
+    <div style="padding-top: 15px; border-top: 1px solid #ddd;">
+        <h3 style="margin-bottom: 15px;">Subtotal: ₹<span id="totalPrice">0</span></h3>
+        <button class="add-btn" style="width: 100%; padding: 12px;" onclick="openCheckout()">Proceed to Buy</button>
     </div>
 </div>
 
 <div class="modal" id="checkoutModal">
     <div class="modal-content">
-        <h2>Shipping Address</h2>
-        <br>
-        <input id="fullName" placeholder="Full Name" style="width:100%; padding:10px; margin-bottom:10px;">
-        <input id="address" placeholder="Flat, House no, Building" style="width:100%; padding:10px; margin-bottom:10px;">
-        <input id="city" placeholder="Town/City" style="width:100%; padding:10px; margin-bottom:10px;">
-        <select id="payment" style="width:100%; padding:10px; margin-bottom:20px;">
-            <option value="cod">Cash on Delivery</option>
-            <option value="upi">UPI / Net Banking</option>
-        </select>
-        <button class="add-btn" style="width:100%" onclick="placeOrder()">Use this address</button>
-        <button onclick="closeCheckout()" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer;">Cancel</button>
+        <h2 style="margin-bottom: 15px;">Shipping Address</h2>
+        <input id="userName" placeholder="Full Name" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ddd;">
+        <input id="userAddr" placeholder="Street Address" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd;">
+        <button class="add-btn" style="width:100%" onclick="placeOrder()">Place Order</button>
+        <button onclick="document.getElementById('checkoutModal').style.display='none'" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer; color:#007185;">Cancel</button>
     </div>
 </div>
 
-<div class="toast" id="toast">Added to Cart!</div>
+<div class="toast" id="toast">Added to Cart</div>
 
 <script>
-    const products = [
-        { name: 'Apple iPhone 15 (128 GB) - Black', price: 72999, img: 'https://m.media-amazon.com/images/I/71657UrqZfL._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Samsung Galaxy M34 5G (Prism Silver)', price: 16999, img: 'https://m.media-amazon.com/images/I/91ItZze1qOL._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Sony WH-1000XM5 Wireless Headphones', price: 29990, img: 'https://m.media-amazon.com/images/I/51aB7hrGRRL._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Apple 2023 MacBook Pro Laptop M3', price: 169900, img: 'https://m.media-amazon.com/images/I/616p9S7G8AC._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Kindle Paperwhite (16 GB)', price: 13999, img: 'https://m.media-amazon.com/images/I/71X8InX96ML._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Echo Dot (5th Gen) with Alexa', price: 4999, img: 'https://m.media-amazon.com/images/I/81S8A69W4dL._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Fire TV Stick with Alexa Voice Remote', price: 3999, img: 'https://m.media-amazon.com/images/I/51H24ARSejL._AC_UY327_FMwebp_QL65_.jpg' },
-        { name: 'Logitech G502 Hero Gaming Mouse', price: 4295, img: 'https://m.media-amazon.com/images/I/51IOY99v96L._AC_UY327_FMwebp_QL65_.jpg' }
+    const inventory = [
+        { id: 1, name: 'Apple iPhone 15 (128 GB) - Black', price: 72999, img: 'https://m.media-amazon.com/images/I/71657UrqZfL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 2, name: 'Sony WH-1000XM5 Noise Cancelling Headphones', price: 29990, img: 'https://m.media-amazon.com/images/I/51aB7hrGRRL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 3, name: 'Samsung Galaxy S24 Ultra 5G', price: 129999, img: 'https://m.media-amazon.com/images/I/71RVuS3q9QL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 4, name: 'MacBook Air M2 Chip - Silver', price: 94900, img: 'https://m.media-amazon.com/images/I/71TPda7cwUL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 5, name: 'Logitech MX Master 3S Wireless Mouse', price: 9495, img: 'https://m.media-amazon.com/images/I/61ni3t1ryQL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 6, name: 'Kindle Paperwhite (16 GB)', price: 13999, img: 'https://m.media-amazon.com/images/I/71X8InX96ML._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 7, name: 'Echo Dot (5th Gen) Deep Sea Blue', price: 4499, img: 'https://m.media-amazon.com/images/I/81S8A69W4dL._AC_UY327_FMwebp_QL65_.jpg' },
+        { id: 8, name: 'Fire TV Stick 4K with Alexa', price: 5999, img: 'https://m.media-amazon.com/images/I/51H24ARSejL._AC_UY327_FMwebp_QL65_.jpg' }
     ];
 
-    let cart = JSON.parse(localStorage.getItem('amazon_cart')) || [];
-    let orders = JSON.parse(localStorage.getItem('amazon_orders')) || [];
+    let cart = JSON.parse(localStorage.getItem('amz_cart')) || [];
+    let orders = JSON.parse(localStorage.getItem('amz_orders')) || [];
 
-    function renderProducts(filter = "") {
-        const grid = document.getElementById('allProducts');
+    // --- NAVIGATION LOGIC ---
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
+        if (pageId === 'historyPage') renderOrders();
+        if (pageId === 'productPage') renderProducts(inventory);
+    }
+
+    // --- PRODUCT LOGIC ---
+    function renderProducts(list) {
+        const grid = document.getElementById('productGrid');
         grid.innerHTML = '';
-        const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
-        
-        filtered.forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.innerHTML = `
+        list.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'product-card';
+            div.innerHTML = `
                 <img src="${p.img}">
-                <h3>${p.name}</h3>
-                <div class="price"><span>₹</span>${p.price.toLocaleString()}</div>
-                <img class="prime-img" src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18x45._CB485936079_.png">
-                <button class="add-btn" onclick='addToCart(${JSON.stringify(p)})'>Add to Cart</button>
+                <h4>${p.name}</h4>
+                <div class="rating">★★★★☆ <span style="color:#007185; font-size:12px;">8,452</span></div>
+                <div class="price">₹${p.price.toLocaleString()}</div>
+                <img class="prime-icon" src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18x45._CB485936079_.png">
+                <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
             `;
-            grid.appendChild(card);
+            grid.appendChild(div);
         });
     }
 
-    function searchProducts() {
-        const term = document.getElementById('searchInput').value;
-        renderProducts(term);
+    function searchAction() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = inventory.filter(p => p.name.toLowerCase().includes(query));
+        showPage('productPage');
+        document.getElementById('pageTitle').innerText = `Results for "${query}"`;
+        renderProducts(filtered);
     }
 
-    function addToCart(p) {
-        const found = cart.find(item => item.name === p.name);
-        if (found) { found.qty++; } else { cart.push({ ...p, qty: 1 }); }
+    // --- CART LOGIC ---
+    function addToCart(id) {
+        const product = inventory.find(p => p.id === id);
+        const exists = cart.find(item => item.id === id);
+        if (exists) { exists.qty++; } else { cart.push({ ...product, qty: 1 }); }
         updateCart();
-        showToast();
+        
+        const toast = document.getElementById('toast');
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 1500);
     }
 
     function updateCart() {
-        const cartItems = document.getElementById('cartItems');
-        cartItems.innerHTML = '';
+        const container = document.getElementById('cartContent');
+        container.innerHTML = cart.length ? '' : '<p>Your cart is empty.</p>';
         let total = 0, count = 0;
 
-        cart.forEach((item, i) => {
+        cart.forEach((item, index) => {
             total += item.price * item.qty;
             count += item.qty;
-            cartItems.innerHTML += `
-                <div style="display:flex; gap:10px; margin-bottom:15px; font-size:14px;">
-                    <img src="${item.img}" style="width:50px; height:50px; object-fit:contain;">
-                    <div>
-                        <p>${item.name}</p>
-                        <strong>₹${item.price}</strong>
-                        <div>Qty: ${item.qty} <span onclick="removeItem(${i})" style="color:blue; cursor:pointer; margin-left:10px;">Delete</span></div>
+            container.innerHTML += `
+                <div class="cart-item">
+                    <img src="${item.img}">
+                    <div style="flex-grow:1">
+                        <p style="font-weight:bold">${item.name}</p>
+                        <p>₹${item.price.toLocaleString()} x ${item.qty}</p>
+                        <span onclick="removeFromCart(${index})" style="color:blue; cursor:pointer; font-size:11px">Remove</span>
                     </div>
                 </div>
             `;
         });
 
-        document.getElementById('total').textContent = total.toLocaleString();
+        document.getElementById('totalPrice').textContent = total.toLocaleString();
         document.getElementById('count').textContent = count;
-        localStorage.setItem('amazon_cart', JSON.stringify(cart));
+        localStorage.setItem('amz_cart', JSON.stringify(cart));
     }
 
-    function removeItem(i) { cart.splice(i, 1); updateCart(); }
-
-    function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); }
-
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-        document.getElementById(pageId).style.display = 'block';
-        if(pageId === 'orderHistory') renderOrders();
+    function removeFromCart(i) { cart.splice(i, 1); updateCart(); }
+    function toggleCart() { 
+        document.getElementById('sidebar').classList.toggle('open'); 
+        document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
     }
 
+    // --- ORDER LOGIC ---
     function openCheckout() {
-        if (cart.length === 0) return alert("Cart is empty!");
-        document.getElementById('checkoutModal').style.display = 'block';
+        if (!cart.length) return alert("Cart is empty!");
+        document.getElementById('checkoutModal').style.display = 'flex';
     }
-
-    function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
 
     function placeOrder() {
-        const name = document.getElementById('fullName').value;
-        if (!name) return alert("Please enter name");
+        const name = document.getElementById('userName').value;
+        if (!name) return alert("Please enter your name");
         
-        orders.push({ items: [...cart], date: new Date().toLocaleDateString(), total: document.getElementById('total').textContent });
+        orders.unshift({ 
+            id: Math.floor(Math.random() * 1000000), 
+            items: [...cart], 
+            date: new Date().toLocaleDateString(), 
+            total: document.getElementById('totalPrice').textContent 
+        });
+        
         cart = [];
         updateCart();
-        localStorage.setItem('amazon_orders', JSON.stringify(orders));
-        closeCheckout();
-        alert("Order Placed Successfully!");
-        showPage('home');
+        localStorage.setItem('amz_orders', JSON.stringify(orders));
+        document.getElementById('checkoutModal').style.display = 'none';
+        toggleCart();
+        alert("Order placed! Thank you.");
+        showPage('historyPage');
     }
 
     function renderOrders() {
-        const list = document.getElementById('historyList');
+        const list = document.getElementById('orderList');
         list.innerHTML = orders.length ? '' : 'No orders found.';
         orders.forEach(o => {
             list.innerHTML += `
-                <div style="background:white; border:1px solid #ddd; border-radius:8px; margin-bottom:20px; overflow:hidden;">
-                    <div style="background:#f0f2f2; padding:15px; display:flex; gap:30px; font-size:12px;">
+                <div style="background:white; border:1px solid #ddd; border-radius:8px; margin-bottom:20px;">
+                    <div style="background:#f0f2f2; padding:10px; display:flex; gap:30px; font-size:12px; border-bottom:1px solid #ddd;">
                         <div>ORDER PLACED<br>${o.date}</div>
                         <div>TOTAL<br>₹${o.total}</div>
+                        <div style="margin-left:auto">ORDER # ${o.id}</div>
                     </div>
                     <div style="padding:15px;">
-                        ${o.items.map(it => `<div>${it.name} (x${it.qty})</div>`).join('')}
+                        ${o.items.map(it => `<div style="margin-bottom:5px;">${it.name} <span style="color:#555">(x${it.qty})</span></div>`).join('')}
                     </div>
                 </div>
             `;
         });
     }
 
-    function showToast() {
-        const t = document.getElementById('toast');
-        t.style.display = 'block';
-        setTimeout(() => t.style.display = 'none', 2000);
-    }
-
-    // Initialize
-    renderProducts();
+    // Init
+    renderProducts(inventory);
     updateCart();
 </script>
-
 </body>
 </html>
