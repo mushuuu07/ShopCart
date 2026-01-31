@@ -69,6 +69,9 @@
         input[type="text"], input[type="email"] { border-radius: 10px; border: 1px solid #ddd; padding: 12px; width: 100%; transition: 0.2s; }
         input:focus { border-color: var(--sc-orange); outline: none; box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.2); }
 
+         .page { display:none; }
+
+
         /* --- BUTTONS --- */
         .btn { width: 100%; padding: 14px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
         .btn-yellow { background: var(--sc-accent); color: #000; }
@@ -84,6 +87,12 @@
     </style>
 </head>
 <body>
+    <!-- SPLASH SCREEN -->
+<section id="splashPage" class="page active" style="display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#131921,#232f3e);color:white;flex-direction:column;">
+    <h1 style="font-size:48px;color:#febd69;">ShopCart</h1>
+    <p style="opacity:0.8;margin-top:10px;">Premium Digital Shopping</p>
+</section>
+
 
 <header>
     <div class="nav-main">
@@ -128,6 +137,53 @@
 <section id="descPage" class="page">
     <div class="desc-wrapper" id="desc-content"></div>
 </section>
+
+<section id="addressPage" class="page">
+  <div class="form-box" style="max-width:600px;margin:auto;">
+    <h2 style="margin-bottom:20px;">Delivery Address</h2>
+
+    <label>Full Name</label>
+    <input type="text" id="addr-name" style="margin-bottom:10px;">
+
+    <label>Phone Number</label>
+    <input type="text" id="addr-phone" style="margin-bottom:10px;">
+
+    <label>Street Address</label>
+    <input type="text" id="addr-street" style="margin-bottom:10px;">
+
+    <label>City</label>
+    <input type="text" id="addr-city" style="margin-bottom:10px;">
+
+    <label>State</label>
+    <input type="text" id="addr-state" style="margin-bottom:10px;">
+
+    <label>Pincode</label>
+    <input type="text" id="addr-pin" style="margin-bottom:20px;">
+
+    <button class="btn btn-yellow" onclick="goToPayment()">Continue to Payment</button>
+  </div>
+</section>
+ 
+<section id="paymentPage" class="page">
+  <div class="form-box" style="max-width:500px;margin:auto;">
+    <h2 style="margin-bottom:20px;">Payment</h2>
+
+    <label>Card Holder Name</label>
+    <input type="text" id="card-name" style="margin-bottom:10px;">
+
+    <label>Card Number</label>
+    <input type="text" id="card-number" style="margin-bottom:10px;">
+
+    <label>Expiry Date</label>
+    <input type="text" placeholder="MM/YY" style="margin-bottom:10px;">
+
+    <label>CVV</label>
+    <input type="text" style="margin-bottom:20px;">
+
+    <button class="btn btn-orange" onclick="finalOrder()">Pay & Place Order</button>
+  </div>
+</section>
+
 
 <section id="checkoutPage" class="page">
     <div class="form-box" style="max-width: 500px; margin: auto;">
@@ -181,6 +237,13 @@
 </footer>
 
 <script>
+
+    // Splash auto redirect
+setTimeout(() => {
+    showPage('homePage');
+}, 2500);
+
+
     const categoryImages = {
         'Phone': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80',
         'Headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80',
@@ -273,12 +336,29 @@
         goToCheckout();
     }
 
-    function goToCheckout() {
-        if(!user) return alert("Sign in first!");
-        if(!cart.length) return alert("Cart empty!");
-        document.getElementById('sidebar').classList.remove('open');
-        showPage('checkoutPage');
-    }
+function goToCheckout() {
+    if(!user) return alert("Sign in first!");
+    if(!cart.length) return alert("Cart empty!");
+    document.getElementById('sidebar').classList.remove('open');
+    showPage('addressPage'); // changed
+}
+
+function goToPayment() {
+    const street = document.getElementById('addr-street').value;
+    if(!street) return alert("Fill address!");
+    showPage('paymentPage');
+}
+
+function finalOrder() {
+    const card = document.getElementById('card-number').value;
+    if(!card) return alert("Enter card details!");
+
+    alert("Payment Successful! Order Placed 🎉");
+    cart = [];
+    document.getElementById('cart-count').innerText = "0";
+    showPage('homePage');
+}
+
 
     function placeOrder() {
         const addr = document.getElementById('ship-addr').value;
