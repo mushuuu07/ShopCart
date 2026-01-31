@@ -1,309 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopCart | Premium Shopping</title>
-    <style>
-        :root {
-            --sc-navy: #131921; 
-            --sc-light-navy: #232f3e; 
-            --sc-accent: #febd69;
-            --sc-orange: #f3a847; 
-            --bg: #f3f4f6; /* Softer grey for curve contrast */
-            --text: #0f1111; 
-            --radius: 15px; /* The "Curve" variable */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopCart | Premium Shopping</title>
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); }
+<style>
+:root {
+--sc-navy:#131921;
+--sc-light-navy:#232f3e;
+--sc-accent:#febd69;
+--sc-orange:#f3a847;
+--bg:#f3f4f6;
+--text:#0f1111;
+--radius:15px;
+}
 
-        /* --- HEADER --- */
-        header { background: var(--sc-navy); color: white; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .nav-main { display: flex; align-items: center; padding: 5px 20px; gap: 15px; height: 65px; }
-        .brand-logo { font-size: 26px; font-weight: 800; cursor: pointer; color: var(--sc-accent); }
-        
-        .search-bar { flex-grow: 1; display: flex; height: 42px; }
-        .search-bar input { flex-grow: 1; border: none; padding: 0 15px; border-radius: var(--radius) 0 0 var(--radius); outline: none; }
-        .search-btn { background: var(--sc-accent); width: 50px; display: flex; justify-content: center; align-items: center; border-radius: 0 var(--radius) var(--radius) 0; cursor: pointer; color: black; }
+*{box-sizing:border-box;font-family:'Segoe UI',Arial;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);}
 
-        .nav-right { display: flex; gap: 10px; }
-        .nav-item { cursor: pointer; padding: 8px 12px; border-radius: var(--radius); border: 1px solid transparent; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); }
-        .nav-item span { display: block; font-size: 11px; color: #ccc; }
+/* PAGE SYSTEM */
+.page{display:none;min-height:80vh;padding:30px 20px;animation:slideUp .4s;}
+.page.active{display:block;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-        .nav-sub { background: var(--sc-light-navy); display: flex; gap: 25px; padding: 10px 25px; font-size: 14px; color: white; }
-        .nav-sub span { cursor: pointer; opacity: 0.9; }
-        .nav-sub span:hover { opacity: 1; text-decoration: underline; }
+/* SPLASH */
+#splashPage{
+display:flex;align-items:center;justify-content:center;
+height:100vh;background:linear-gradient(135deg,#131921,#232f3e);
+color:white;flex-direction:column;
+}
 
-        /* --- PAGE SYSTEM --- */
-        .page { display: none; min-height: 80vh; padding: 30px 20px; animation: slideUp 0.4s ease-out; }
-        .page.active { display: block; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* HEADER */
+header{background:var(--sc-navy);color:white;position:sticky;top:0;z-index:1000;}
+.nav-main{display:flex;align-items:center;padding:5px 20px;gap:15px;height:65px;}
+.brand-logo{font-size:26px;font-weight:800;color:var(--sc-accent);cursor:pointer;}
 
-        /* --- HOME PAGE --- */
-        .hero-banner { 
-            height: 350px; 
-            background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover; background-position: center;
-            margin: -30px -20px 30px -20px;
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 50px;
-        }
-        .intro-card { background: white; padding: 40px; margin: -120px auto 40px; position: relative; max-width: 900px; text-align: center; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
+.search-bar{flex-grow:1;display:flex;height:42px;}
+.search-bar input{flex-grow:1;border:none;padding:0 15px;border-radius:var(--radius) 0 0 var(--radius);}
+.search-btn{background:var(--sc-accent);width:50px;display:flex;justify-content:center;align-items:center;border-radius:0 var(--radius) var(--radius) 0;}
 
-        /* --- PRODUCT GRID --- */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; max-width: 1300px; margin: auto; }
-        .p-card { background: white; padding: 20px; border-radius: var(--radius); border: 1px solid transparent; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column; }
-        .p-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: var(--sc-accent); }
-        .p-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
-        .p-card h4 { margin: 10px 0; font-size: 16px; font-weight: 600; line-height: 1.4; height: 45px; overflow: hidden; }
-        .price-tag { font-size: 22px; font-weight: 700; color: #222; }
+.nav-right{display:flex;gap:10px;}
+.nav-item{cursor:pointer;padding:8px 12px;border-radius:var(--radius);}
+.nav-item:hover{background:rgba(255,255,255,0.1);}
 
-        /* --- DESCRIPTION PAGE --- */
-        .desc-wrapper { max-width: 1100px; margin: auto; background: white; padding: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .desc-img img { width: 100%; max-height: 500px; object-fit: contain; border-radius: var(--radius); }
+.nav-sub{background:var(--sc-light-navy);display:flex;gap:25px;padding:10px 25px;color:white;}
 
-        /* --- FORM & PROFILE BOXES --- */
-        .form-box { background: white; padding: 35px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #eee; }
-        input[type="text"], input[type="email"] { border-radius: 10px; border: 1px solid #ddd; padding: 12px; width: 100%; transition: 0.2s; }
-        input:focus { border-color: var(--sc-orange); outline: none; box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.2); }
+/* PRODUCT GRID */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:25px;}
+.p-card{background:white;padding:20px;border-radius:var(--radius);cursor:pointer;}
+.p-card img{width:100%;height:200px;object-fit:cover;border-radius:10px;}
 
-        /* --- BUTTONS --- */
-        .btn { width: 100%; padding: 14px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
-        .btn-yellow { background: var(--sc-accent); color: #000; }
-        .btn-yellow:hover { background: #f7b14d; }
-        .btn-orange { background: var(--sc-orange); color: #fff; }
-        .btn-orange:hover { background: #e29635; }
+.form-box{background:white;padding:35px;border-radius:25px;box-shadow:0 10px 25px rgba(0,0,0,0.05);}
+input{border-radius:10px;border:1px solid #ddd;padding:12px;width:100%;margin-bottom:10px;}
 
-        /* --- CART SIDEBAR --- */
-        .sidebar { position: fixed; right: -450px; top: 0; width: 400px; height: 100%; background: white; z-index: 2000; padding: 30px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-top-left-radius: 40px; border-bottom-left-radius: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
-        .sidebar.open { right: 0; }
+.btn{width:100%;padding:14px;border-radius:30px;border:none;font-weight:bold;cursor:pointer;}
+.btn-yellow{background:var(--sc-accent);}
+.btn-orange{background:var(--sc-orange);color:white;}
 
-        footer { background: var(--sc-navy); color: white; text-align: center; padding: 50px; margin-top: 60px; border-top-left-radius: 50px; border-top-right-radius: 50px; }
-    </style>
+footer{background:var(--sc-navy);color:white;text-align:center;padding:40px;margin-top:40px;}
+</style>
 </head>
+
 <body>
 
+<!-- SPLASH PAGE -->
+<section id="splashPage" class="page active">
+<h1 style="font-size:48px;color:#febd69;">ShopCart</h1>
+<p style="opacity:.8;">Premium Digital Shopping</p>
+</section>
+
 <header>
-    <div class="nav-main">
-        <div class="brand-logo" onclick="showPage('homePage')">ShopCart</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search tech, home, and more...">
-            <div class="search-btn">🔍</div>
-        </div>
-        <div class="nav-right">
-            <div class="nav-item" onclick="handleAccountNav()">
-                <span id="user-display">Hello, Sign in</span>
-                <strong>My Profile</strong>
-            </div>
-            <div class="nav-item" onclick="openCart()">
-                <span>Review</span>
-                <strong>🛒 Cart (<span id="cart-count">0</span>)</strong>
-            </div>
-        </div>
-    </div>
-    <div class="nav-sub">
-        <span onclick="showPage('homePage')">Home</span>
-        <span onclick="showPage('productsPage')">All Products</span>
-        <span>Mobiles</span>
-        <span>Accessories</span>
-    </div>
+<div class="nav-main">
+<div class="brand-logo" onclick="showPage('homePage')">ShopCart</div>
+</div>
 </header>
 
-<section id="homePage" class="page active">
-    <div class="hero-banner"></div>
-    <div class="intro-card">
-        <h1>Your Shopping, Simplified.</h1>
-        <p style="margin: 20px 0; color: #666; font-size: 18px;">Curated premium products with a touch of elegance. Start exploring the future of retail today.</p>
-        <button class="btn btn-yellow" style="width: 250px;" onclick="showPage('productsPage')">Browse Catalog</button>
-    </div>
+<!-- HOME -->
+<section id="homePage" class="page">
+<h1>Welcome to ShopCart</h1>
+<button class="btn btn-yellow" onclick="showPage('productsPage')">Browse Products</button>
 </section>
 
+<!-- PRODUCTS -->
 <section id="productsPage" class="page">
-    <h2 style="text-align:center; margin-bottom:40px; font-size: 32px;">The ShopCart Catalog</h2>
-    <div class="product-grid" id="main-grid"></div>
+<h2>Products</h2>
+<div class="product-grid" id="grid"></div>
 </section>
 
-<section id="descPage" class="page">
-    <div class="desc-wrapper" id="desc-content"></div>
-</section>
+<!-- ADDRESS PAGE -->
+<section id="addressPage" class="page">
+<div class="form-box" style="max-width:600px;margin:auto;">
+<h2>Delivery Address</h2>
 
-<section id="checkoutPage" class="page">
-    <div class="form-box" style="max-width: 500px; margin: auto;">
-        <h2 style="margin-bottom:25px;">Shipping Information</h2>
-        <div style="margin-bottom: 15px;">
-            <label>Full Name</label>
-            <input type="text" id="ship-name">
-        </div>
-        <div style="margin-bottom: 15px;">
-            <label>Street Address</label>
-            <input type="text" id="ship-addr">
-        </div>
-        <div style="margin-bottom: 20px;">
-            <input type="checkbox" id="save-to-profile" checked> Save to profile
-        </div>
-        <button class="btn btn-orange" onclick="placeOrder()">Confirm & Place Order</button>
-    </div>
-</section>
+<input type="text" id="addr-name" placeholder="Full Name">
+<input type="text" id="addr-phone" placeholder="Phone">
+<input type="text" id="addr-street" placeholder="Street">
+<input type="text" id="addr-city" placeholder="City">
+<input type="text" id="addr-state" placeholder="State">
+<input type="text" id="addr-pin" placeholder="Pincode">
 
-<section id="profilePage" class="page">
-    <div style="max-width: 900px; margin: auto; display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
-        <div class="form-box" style="height: fit-content;">
-            <h3>Session</h3><br>
-            <p id="p-email" style="color: #666;"></p><br>
-            <button class="btn btn-orange" onclick="logout()">Log Out</button>
-        </div>
-        <div class="form-box">
-            <h3>Account Settings</h3><br>
-            <label>Name:</label>
-            <input type="text" id="p-name-input" style="margin: 10px 0 20px 0;">
-            <button class="btn btn-yellow" onclick="updateName()">Update Name</button>
-            <hr style="margin:30px 0; opacity: 0.1;">
-            <h3>Saved Addresses</h3>
-            <div id="address-history" style="margin-top:15px;"></div>
-        </div>
-    </div>
-</section>
-
-<div class="sidebar" id="sidebar">
-    <h2 style="font-size: 28px;">Your Cart</h2><br>
-    <div id="cart-list" style="height:70%; overflow-y:auto;"></div>
-    <div style="border-top: 1px solid #eee; padding-top:20px;">
-        <h3 id="cart-total-text" style="font-size: 24px;">Total: ₹0</h3>
-        <button class="btn btn-yellow" style="margin-top: 15px;" onclick="goToCheckout()">Proceed to Checkout</button>
-    </div>
+<button class="btn btn-yellow" onclick="goToPayment()">Continue to Payment</button>
 </div>
+</section>
 
-<footer>
-    <p style="font-size: 18px; font-weight: bold;">ShopCart</p>
-    <p style="opacity: 0.6; margin-top: 10px;">© 2026 ShopCart Digital Ltd. Handcrafted for you.</p>
-</footer>
+<!-- PAYMENT PAGE -->
+<section id="paymentPage" class="page">
+<div class="form-box" style="max-width:500px;margin:auto;">
+<h2>Payment</h2>
+
+<input type="text" id="card-name" placeholder="Card Holder Name">
+<input type="text" id="card-number" placeholder="Card Number">
+<input type="text" placeholder="MM/YY">
+<input type="text" placeholder="CVV">
+
+<button class="btn btn-orange" onclick="finalOrder()">Pay & Place Order</button>
+</div>
+</section>
+
+<footer>© 2026 ShopCart</footer>
 
 <script>
-    const categoryImages = {
-        'Phone': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80',
-        'Headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80',
-        'Watch': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80',
-        'Laptop': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80',
-        'Camera': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500&q=80'
-    };
+/* SPLASH AUTO REDIRECT */
+setTimeout(()=>{showPage('homePage')},2500);
 
-    const productNames = ['Elite', 'Pro Max', 'Air', 'Core', 'Infinity'];
-    const types = ['Phone', 'Headphones', 'Watch', 'Laptop', 'Camera'];
+const products=[
+{id:1,name:"Phone",price:20000,img:"https://via.placeholder.com/300"},
+{id:2,name:"Laptop",price:60000,img:"https://via.placeholder.com/300"}
+];
 
-    const products = Array.from({length: 24}, (_, i) => {
-        const type = types[i % types.length];
-        return {
-            id: i + 1,
-            name: `${productNames[i % productNames.length]} ${type} V${i+1}`,
-            price: 2000 + (i * 1500),
-            img: categoryImages[type],
-            desc: `The ${type} reimagined. This ShopCart exclusive features premium materials, optimized battery performance, and a sleek curved aesthetic designed to fit your lifestyle.`
-        };
-    });
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
 
-    let user = JSON.parse(localStorage.getItem('sc_user'));
-    let cart = [];
+/* PRODUCTS */
+const grid=document.getElementById('grid');
+products.forEach(p=>{
+grid.innerHTML+=`
+<div class="p-card" onclick="goToAddress()">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p>₹${p.price}</p>
+</div>`;
+});
 
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+function goToAddress(){
+showPage('addressPage');
+}
 
-    function handleAccountNav() {
-        if(!user) {
-            const email = prompt("Enter email to sign in to ShopCart:");
-            if(email) {
-                user = { email, name: email.split('@')[0], addresses: [] };
-                save(); updateHeader();
-            }
-        } else {
-            document.getElementById('p-email').innerText = user.email;
-            document.getElementById('p-name-input').value = user.name;
-            renderSavedAddresses();
-            showPage('profilePage');
-        }
-    }
+function goToPayment(){
+if(!document.getElementById('addr-street').value) return alert("Fill address!");
+showPage('paymentPage');
+}
 
-    function updateName() { user.name = document.getElementById('p-name-input').value; save(); updateHeader(); alert("Name saved!"); }
-    function logout() { user = null; localStorage.removeItem('sc_user'); updateHeader(); showPage('homePage'); }
-    function save() { localStorage.setItem('sc_user', JSON.stringify(user)); }
-    function updateHeader() { document.getElementById('user-display').innerText = user ? `Hello, ${user.name}` : "Hello, Sign in"; }
-
-    function init() {
-        const grid = document.getElementById('main-grid');
-        products.forEach(p => {
-            grid.innerHTML += `
-                <div class="p-card" onclick="viewProduct(${p.id})">
-                    <img src="${p.img}">
-                    <h4>${p.name}</h4>
-                    <p class="price-tag">₹${p.price.toLocaleString()}</p>
-                    <button class="btn btn-yellow" style="margin-top:15px; padding:8px;">View Item</button>
-                </div>`;
-        });
-        updateHeader();
-    }
-
-    function viewProduct(id) {
-        const p = products.find(x => x.id === id);
-        document.getElementById('desc-content').innerHTML = `
-            <div class="desc-img"><img src="${p.img}"></div>
-            <div>
-                <h1 style="font-size:36px;">${p.name}</h1>
-                <p style="color:var(--sc-orange); font-size:28px; font-weight:bold; margin:15px 0;">₹${p.price.toLocaleString()}</p>
-                <p style="line-height:1.8; color:#555;">${p.desc}</p><br>
-                <button class="btn btn-yellow" onclick="addToCart(${p.id})">Add to Cart</button>
-                <button class="btn btn-orange" style="margin-top:10px;" onclick="buyNow(${p.id})">Buy Now</button>
-            </div>`;
-        showPage('descPage');
-    }
-
-    function addToCart(id) {
-        if(!user) return alert("Please sign in!");
-        cart.push(products.find(x => x.id === id));
-        document.getElementById('cart-count').innerText = cart.length;
-        alert("Added to Cart!");
-    }
-
-    function buyNow(id) {
-        if(!user) return alert("Please sign in!");
-        cart = [products.find(x => x.id === id)];
-        goToCheckout();
-    }
-
-    function goToCheckout() {
-        if(!user) return alert("Sign in first!");
-        if(!cart.length) return alert("Cart empty!");
-        document.getElementById('sidebar').classList.remove('open');
-        showPage('checkoutPage');
-    }
-
-    function placeOrder() {
-        const addr = document.getElementById('ship-addr').value;
-        if(!addr) return alert("Enter address!");
-        if(document.getElementById('save-to-profile').checked) user.addresses.push(addr);
-        save(); alert("Order successful!");
-        cart = []; document.getElementById('cart-count').innerText = "0";
-        showPage('homePage');
-    }
-
-    function renderSavedAddresses() {
-        const box = document.getElementById('address-history');
-        box.innerHTML = user.addresses.length ? '' : 'No addresses saved.';
-        user.addresses.forEach(a => box.innerHTML += `<div style="padding:15px; background:#f9f9f9; border-radius:12px; margin-bottom:10px; border:1px solid #eee;">${a}</div>`);
-    }
-
-    function openCart() {
-        const list = document.getElementById('cart-list');
-        list.innerHTML = ''; let sum = 0;
-        cart.forEach(it => { sum += it.price; list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; margin-bottom:10px;"><b>${it.name}</b><br>₹${it.price}</div>`; });
-        document.getElementById('cart-total-text').innerText = "Total: ₹" + sum.toLocaleString();
-        document.getElementById('sidebar').classList.add('open');
-    }
-
-    init();
+function finalOrder(){
+if(!document.getElementById('card-number').value) return alert("Enter card!");
+alert("Payment Successful 🎉");
+showPage('homePage');
+}
 </script>
+
 </body>
 </html>
