@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "shopcart",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -19,7 +19,25 @@
     
   },
   
-  "rewrites":[
-    {"source": "/api/(.*)","destination": "/api/server.js"}
+  "builds": [
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/server.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
+
   }
