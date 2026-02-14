@@ -300,7 +300,7 @@ async function savePaymentToMongo() {
 
     try {
         // IMPORTANT: Use relative URL for hosting on Vercel/Render
-        const response = await fetch('http://localhost:3000/save-payment', {
+        const response = await fetch('/api/save-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paymentData)
@@ -342,3 +342,4 @@ async function savePaymentToMongo() {
     }
 
     init();
+
